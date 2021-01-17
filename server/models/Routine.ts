@@ -41,4 +41,4 @@ export interface Routine extends Document {
 
 const RoutineModel = model<Routine>("Routine", RoutineSchema);
 
-export default RoutineModel;
+module.exports =  RoutineModel;

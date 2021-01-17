@@ -3,8 +3,8 @@ import auth from "./auth";
 import socketManager from "./server-socket";
 const router = express.Router();
 
-const User = require("./models/User.ts");
-const Routine = require("./models/Routine.ts");
+const Routine = require("./models/Routine");
+import RoutineInterface from "../shared/Routine";
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -26,7 +26,7 @@ router.post("/initsocket", (req, res) => {
 
 // takes { owner_id: string } as parameter and returns array of all routines saved by that user
 router.get("/saved-routines", (req, res) => {
-  Routine.find({ owner_id: req.query.owner_id }).then((routines) => {
+  Routine.find({ owner_id: req.query.owner_id }).then((routines: RoutineInterface[]) => {
     res.send(routines);
   })
 })
