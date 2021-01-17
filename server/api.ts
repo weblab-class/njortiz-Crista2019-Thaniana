@@ -31,6 +31,13 @@ router.get("/saved-routines", (req, res) => {
   })
 })
 
+// takes { searchString: string } as parameter and returns array of all public routines with name similar to searchString
+router.get("/search-routines", (req, res) => {
+  Routine.find({ name: {$regex: req.query.searchString, $options: "i"}, isPublic: true }).then((routines: RoutineInterface[]) => {
+    res.send(routines);
+  })
+})
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   const msg = `Api route not found: ${req.method} ${req.url}`;
