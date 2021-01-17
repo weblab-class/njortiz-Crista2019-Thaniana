@@ -41,8 +41,8 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
                 />
               )}
             </div>
-            <div className="item nav-button">View Routines</div>
-            <div className="item nav-button">Search</div>
+            <div className="item nav-button"><a href="/routine">View Routines</a></div>
+            <div className="item nav-button"><a href="/feed">Search</a></div>
           </ul>
         </div>
       </>
