@@ -1,0 +1,87 @@
+.title {
+    font-weight: 300;
+    font-size: 96px;
+    text-size-adjust: 50%;
+}
+.content {
+    font-weight: 100;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.center-text {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-right: 20%;
+}
+
+.side-divs {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.rect {
+    background-color: rgba(62, 136, 91, 1);
+    height: 10vh;
+    display: inline-block;
+    width: 300px;
+    margin: 10px;
+    margin-left: 0px;
+}
+
+@keyframes div-jump {
+    to {width: 600px;}
+    to {background-color: rgba(191,218,221,.4);}
+  }
+
+.rect:hover {
+    animation-name: div-jump;
+    animation-duration: 2s;
+}
+
+#rect1 {
+    background-color: rgba(62, 136, 91, 1);
+    width: 500px;
+    margin-top: 0px;
+}
+
+#rect2 {
+    background-color: rgba(62, 136, 91, .8);
+    width: 350px;
+}
+
+#rect3 {
+    background-color: rgba(62, 136, 91, .7);
+    width: 400px;
+}
+
+#rect4 {
+    background-color: rgba(62, 136, 91, .6);
+    width: 300px;
+}
+#rect5 {
+    background-color: rgba(62, 136, 91, .5);
+    width: 200px;
+}
+#rect6 {
+    background-color: rgba(62, 136, 91, .3);
+    width: 320px;
+}
+#rect7 {
+    background-color: rgba(62, 136, 91, .2);
+    width: 100px;
+}
+
+#rect8 {
+    background-color: rgba(62, 136, 91, .1);
+    width: 30px;
+}
