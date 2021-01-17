@@ -39,8 +39,15 @@
 }
 
 @keyframes div-jump {
-    to {width: 600px;}
-    to {background-color: rgba(191,218,221,.4);}
+    from { transform: scaleX(1);}
+    50% {
+        transform: scaleX(2);
+        background-color: rgba(191,218,221,.4);
+    }
+    to {
+        background-color: rgba(62, 136, 91, 1);
+        transform: scaleX(1);
+    }
   }
 
 .rect:hover {
