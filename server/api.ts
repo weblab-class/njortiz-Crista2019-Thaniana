@@ -44,6 +44,18 @@ router.post("/new-routine", (req, res) => {
   newRoutine.save().then((routine: RoutineInterface) => res.send(routine));
 });
 
+// takes { routine: Routine } as parameter and updates the Routine with the same _id to have the new parameters
+router.post("/edit-routine", (req, res) => {
+  const updatedRoutine = req.body.routine;
+  Routine.findById(updatedRoutine._id).then((routine: RoutineInterface) => {
+    routine.name = updatedRoutine.name;
+    routine.duration = updatedRoutine.duration;
+    routine.intervals = updatedRoutine.intervals;
+    routine.isPublic = updatedRoutine.isPublic;
+    routine.save().then((savedRoutine: RoutineInterface) => res.send(savedRoutine));
+  });
+});
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   const msg = `Api route not found: ${req.method} ${req.url}`;
