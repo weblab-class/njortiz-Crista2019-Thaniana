@@ -3,8 +3,8 @@ import auth from "./auth";
 import socketManager from "./server-socket";
 const router = express.Router();
 
-const User = require("./models/User.ts");
-const Routine = require("./models/Routine.ts");
+const Routine = require("./models/Routine");
+import RoutineInterface from "../shared/Routine";
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -26,10 +26,23 @@ router.post("/initsocket", (req, res) => {
 
 // takes { owner_id: string } as parameter and returns array of all routines saved by that user
 router.get("/saved-routines", (req, res) => {
-  Routine.find({ owner_id: req.query.owner_id }).then((routines) => {
+  Routine.find({ owner_id: req.query.owner_id }).then((routines: RoutineInterface[]) => {
     res.send(routines);
   })
-})
+});
+
+// takes { searchString: string } as parameter and returns array of all public routines with name similar to searchString
+router.get("/search-routines", (req, res) => {
+  Routine.find({ name: {$regex: req.query.searchString, $options: "i"}, isPublic: true }).then((routines: RoutineInterface[]) => {
+    res.send(routines);
+  })
+});
+
+// takes { routine: Routine } as parameter and adds the new Routine to the database
+router.post("/new-routine", (req, res) => {
+  const newRoutine = new Routine({...req.body.routine});
+  newRoutine.save().then((routine: RoutineInterface) => res.send(routine));
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
