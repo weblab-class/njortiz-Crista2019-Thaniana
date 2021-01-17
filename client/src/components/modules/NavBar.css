@@ -1,0 +1,38 @@
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.items {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-right: var(--m);
+}
+
+.item {
+  display: inline-block;
+  padding: var(--s) var(--m);
+  margin: var(--s);
+}
+
+.header {
+  font-size: 32px;
+  width: 100%;
+}
+
+.nav-button {
+  color: #bfdadd;
+  background-color: #3e885b;
+  border-radius: 25px;
+  text-align: center;
+  height: fit-content;
+}
+
+.nav-button:hover {
+  color: #bfdadd;
+  background-color: #366b4b;
+  cursor: pointer;
+}

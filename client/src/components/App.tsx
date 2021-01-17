@@ -3,6 +3,7 @@ import { Router  } from '@reach/router';
 import { get, post } from '../utilities'
 import NotFound from './pages/NotFound';
 import Skeleton from './pages/Skeleton';
+import NavBar from "./modules/NavBar";
 import { GoogleLoginResponse } from 'react-google-login';
 import { socket } from '../client-socket';
 import User from '../../../shared/User';
@@ -48,10 +49,15 @@ class App extends Component<{}, State> {
     // NOTE:
     // All the pages need to have the props defined in RouteComponentProps for @reach/router to work properly. Please use the Skeleton as an example.
     return (
-      <Router>
+      <>
+      <NavBar handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId} />
+      <div>
+        <Router>
         <Skeleton path="/" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
         <NotFound default={true}/>
       </Router>
+      </div>
+      </>
     )
   }
 }
