@@ -1,35 +1,42 @@
-import React, { Component } from 'react';
-import { Router  } from '@reach/router';
-import { get, post } from '../utilities'
-import NotFound from './pages/NotFound';
+import React, { Component } from "react";
+import { Router } from "@reach/router";
+import { get, post } from "../utilities";
+import NotFound from "./pages/NotFound";
 import Skeleton from './pages/Skeleton';
-import NavBar from "./modules/NavBar";
-import { GoogleLoginResponse } from 'react-google-login';
-import { socket } from '../client-socket';
-import User from '../../../shared/User';
+import LandingPage from "./pages/LandingPage";
+import Feed from "./pages/Feed";
+import Dashboard from "./pages/Dashboard";
+import Routine from "./pages/Routine";
+import { GoogleLoginResponse } from "react-google-login";
+import { socket } from "../client-socket";
+import User from "../../../shared/User";
 import "../utilities.css";
 
 type State = {
-  userId: String,
-}
+  userId: String;
+};
 
 class App extends Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {
       userId: undefined,
-    }
+    };
   }
 
   componentDidMount() {
-    get('/api/whoami').then((user: User) => {
-      if (user._id) {
-        // TRhey are registed in the database and currently logged in.
-        this.setState({userId: user._id})
-      }
-    }).then(() => socket.on("connect", () => {
-      post("/api/initsocket", { socketid: socket.id });
-    }));
+    get("/api/whoami")
+      .then((user: User) => {
+        if (user._id) {
+          // TRhey are registed in the database and currently logged in.
+          this.setState({ userId: user._id });
+        }
+      })
+      .then(() =>
+        socket.on("connect", () => {
+          post("/api/initsocket", { socketid: socket.id });
+        })
+      );
   }
 
   handleLogin = (res: GoogleLoginResponse) => {
@@ -50,15 +57,23 @@ class App extends Component<{}, State> {
     // All the pages need to have the props defined in RouteComponentProps for @reach/router to work properly. Please use the Skeleton as an example.
     return (
       <>
-      <NavBar handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId} />
-      <div>
-        <Router>
-        <Skeleton path="/" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
-        <NotFound default={true}/>
-      </Router>
-      </div>
+        {/* <NavBar
+          handleLogin={this.handleLogin}
+          handleLogout={this.handleLogout}
+          userId={this.state.userId}
+        /> */}
+        <div>
+          <Router>
+            <LandingPage path="/" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
+            <Feed path="/feed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
+            <Dashboard path="/dashboard" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
+            <Routine path="/routine" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
+            <Skeleton path="/shouldntneed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
+            <NotFound default={true} />
+          </Router>
+        </div>
       </>
-    )
+    );
   }
 }
 
