@@ -23,6 +23,12 @@
   width: 100%;
 }
 
+/* If we want the left-most header to link to an info page, etc */
+/* .header a {
+  color: black;
+  text-decoration: none;
+} */
+
 .nav-button {
   background-color: #3e885b;
   border-radius: 25px;
