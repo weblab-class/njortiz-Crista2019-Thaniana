@@ -17,8 +17,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;1,300;1,800&display=swap');
 
 :root {
-  --primary: #396dff;
-  --primary--dim: #6987db;
+  --primary: #3e885b;
+  --primary--dim: #85bda6;
+  --primary--dark: #2f4b26;
+  --blue: #bedcfe;
+  --lightblue: #bfdadd;
   --darkgrey: #d4d4d4;
   --medgrey: #e0e0e0;
   --grey: #f7f7f7;
@@ -33,7 +36,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 300;
 }
 
