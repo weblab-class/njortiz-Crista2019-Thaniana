@@ -7,10 +7,11 @@ import GoogleLogin, {
     GoogleLoginResponseOffline,
     GoogleLogout,
   } from "react-google-login";
+import User from "../../../../shared/User";
 
 const GOOGLE_CLIENT_ID = "747028770339-cfhb6js9kp34beoojcm811ijha6kfc4n.apps.googleusercontent.com";
 type Props = {
-  userId: String;
+  user: User;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
   handleLogout: () => void;
 };
@@ -24,7 +25,7 @@ class CreateRoutine extends Component<Props & RouteComponentProps, State> {
     }
 
     render() {
-      if (!this.props.userId) {
+      if (!this.props.user) {
         navigate(-1);
       }
       return (
@@ -32,7 +33,7 @@ class CreateRoutine extends Component<Props & RouteComponentProps, State> {
           <NavBar
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
-          userId={this.props.userId}
+          user={this.props.user}
         />
         </>
       )

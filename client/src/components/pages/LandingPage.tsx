@@ -6,10 +6,11 @@ import GoogleLogin, {
     GoogleLoginResponseOffline,
     GoogleLogout,
   } from "react-google-login";
+import User from "../../../../shared/User";
 
 const GOOGLE_CLIENT_ID = "747028770339-cfhb6js9kp34beoojcm811ijha6kfc4n.apps.googleusercontent.com";
 type Props = {
-  userId: String;
+  user: User;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
   handleLogout: () => void;
 };
@@ -19,7 +20,7 @@ type State = {
 
   class LandingPage extends Component<Props & RouteComponentProps, State> {
     render() {
-      if (this.props.userId) {
+      if (this.props.user) {
         navigate("/dashboard");
       }
       return (
@@ -43,7 +44,7 @@ type State = {
                   interval scheduling made easy.
               </div>
               <div className="content">
-              {this.props.userId ? (
+              {this.props.user ? (
                 <GoogleLogout
                   clientId={GOOGLE_CLIENT_ID}
                   buttonText="Logout"

@@ -6,10 +6,11 @@ import GoogleLogin, {
   GoogleLogout,
 } from "react-google-login";
 import "./NavBar.css";
+import User from "../../../../shared/User";
 
 const GOOGLE_CLIENT_ID = "747028770339-cfhb6js9kp34beoojcm811ijha6kfc4n.apps.googleusercontent.com";
 type Props = {
-  userId: String;
+  user: User;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
   handleLogout: () => void;
 };
@@ -25,7 +26,7 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
           <div className="item header">i n t e r v a l s</div>
           <ul className="items">
             <div className="item">
-              {this.props.userId ? (
+              {this.props.user ? (
                 <GoogleLogout
                   clientId={GOOGLE_CLIENT_ID}
                   buttonText="Logout"

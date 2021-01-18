@@ -8,9 +8,12 @@ import GoogleLogin, {
     GoogleLogout,
   } from "react-google-login";
 
+import RoutineList from "../modules/RoutineList";
+import User from "../../../../shared/User";
+
 const GOOGLE_CLIENT_ID = "747028770339-cfhb6js9kp34beoojcm811ijha6kfc4n.apps.googleusercontent.com";
 type Props = {
-  userId: String;
+  user: User;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
   handleLogout: () => void;
 };
@@ -24,7 +27,7 @@ class Dashboard extends Component<Props & RouteComponentProps, State> {
       super(props);
     }
     render() {
-      if (!this.props.userId) {
+      if (!this.props.user) {
         navigate(-1);
       }
       return (
@@ -32,7 +35,7 @@ class Dashboard extends Component<Props & RouteComponentProps, State> {
           <NavBar
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
-          userId={this.props.userId}
+          user={this.props.user}
         />
         <div
           className="Profile-Pic-Container"
@@ -40,14 +43,11 @@ class Dashboard extends Component<Props & RouteComponentProps, State> {
           <div className="Profile-Pic" />
         </div>
         <div className="center-text">
-        <h1 className="Profile-name">Batman's Routines(hardcoded currently)</h1>
+        <h1 className="Profile-name">{this.props.user.name}'s Routines</h1>
         </div>
         <hr/>
         <div className="center-text">
-          <div>Routine1</div>
-          <div>Routine2</div>
-          <div>Routine3</div>
-          <div>Routine4</div>
+          <RoutineList user={this.props.user} />
         </div>
         </>
       )

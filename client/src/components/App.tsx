@@ -13,23 +13,23 @@ import User from "../../../shared/User";
 import "../utilities.css";
 
 type State = {
-  userId: String;
+  user: User;
 };
 
 class App extends Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {
-      userId: undefined,
+      user: undefined,
     };
   }
 
   componentDidMount() {
     get("/api/whoami")
       .then((user: User) => {
-        if (user._id) {
+        if (user) {
           // TRhey are registed in the database and currently logged in.
-          this.setState({ userId: user._id });
+          this.setState({ user: user});
         }
       })
       .then(() =>
@@ -43,13 +43,13 @@ class App extends Component<{}, State> {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
-      this.setState({ userId: user._id });
+      this.setState({ user: user });
       navigate("/dashboard");//for some reason does not link to the dashboard 
     });
   };
 
   handleLogout = () => {
-    this.setState({ userId: undefined });
+    this.setState({ user: undefined });
     post("/api/logout");
     navigate("/")
   };
@@ -66,11 +66,11 @@ class App extends Component<{}, State> {
         /> */}
         <div>
           <Router>
-            <LandingPage path="/" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
-            <Feed path="/feed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
-            <Dashboard path="/dashboard" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
-            <CreateRoutine path="/new_routine" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
-            <Skeleton path="/shouldntneed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
+            <LandingPage path="/" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
+            <Feed path="/feed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
+            <Dashboard path="/dashboard" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
+            <CreateRoutine path="/new_routine" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
+            <Skeleton path="/shouldntneed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.user?._id}/>
             <NotFound default={true} />
           </Router>
         </div>
