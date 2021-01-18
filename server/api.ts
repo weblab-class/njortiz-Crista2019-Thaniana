@@ -38,6 +38,11 @@ router.get("/search-routines", (req, res) => {
   })
 });
 
+// takes no inputs and returns a list of all public routines
+router.get("/public-routines", (req, res) => {
+  Routine.find({ isPublic: true }).then((routines: RoutineInterface[]) => res.send(routines));
+});
+
 // takes { routine: Routine } as parameter and adds the new Routine to the database
 router.post("/new-routine", (req, res) => {
   const newRoutine = new Routine({...req.body.routine});
