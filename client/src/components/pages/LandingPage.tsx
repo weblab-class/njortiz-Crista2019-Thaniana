@@ -22,6 +22,7 @@ type State = {
     render() {
       if (this.props.user) {
         navigate("/dashboard");
+        return null;
       }
       return (
         <>
