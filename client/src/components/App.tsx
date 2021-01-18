@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Router } from "@reach/router";
+import { navigate, Router } from "@reach/router";
 import { get, post } from "../utilities";
 import NotFound from "./pages/NotFound";
 import Skeleton from './pages/Skeleton';
 import LandingPage from "./pages/LandingPage";
 import Feed from "./pages/Feed";
 import Dashboard from "./pages/Dashboard";
-import Routine from "./pages/Routine";
 import CreateRoutine from "./pages/CreateRoutine";
 import { GoogleLoginResponse } from "react-google-login";
 import { socket } from "../client-socket";
@@ -45,13 +44,14 @@ class App extends Component<{}, State> {
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
       this.setState({ userId: user._id });
-      // window.open('/Dashboard');//for some reason does not link to the dashboard 
+      navigate("/dashboard");//for some reason does not link to the dashboard 
     });
   };
 
   handleLogout = () => {
     this.setState({ userId: undefined });
     post("/api/logout");
+    navigate("/")
   };
 
   render() {
@@ -69,7 +69,6 @@ class App extends Component<{}, State> {
             <LandingPage path="/" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
             <Feed path="/feed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
             <Dashboard path="/dashboard" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
-            <Routine path="/routine" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
             <CreateRoutine path="/new_routine" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
             <Skeleton path="/shouldntneed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.userId}/>
             <NotFound default={true} />

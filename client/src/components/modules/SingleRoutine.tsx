@@ -7,7 +7,7 @@ import { Link } from "@reach/router";
 
 export interface Routine {
   _id: string;
-  creator_name: string;
+  name: string;
   creator_id: string;
   content: string;
 }
@@ -20,7 +20,7 @@ class SingleRoutine extends Component<Routine> {
   render() {
     return (
       <div className="Single-Routine">
-        <span className="Single-Routine-Name">{this.props.creator_name}</span>
+        <span className="Single-Routine-Name">{this.props.name}</span>
         <p className="Single-Rountine-type">{this.props.content}</p>
       </div>
     );
