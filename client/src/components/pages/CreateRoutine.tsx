@@ -1,6 +1,6 @@
 import NavBar from "../modules/NavBar";
 import React, { Component } from 'react';
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps, navigate } from "@reach/router";
 import "./CreateRoutine.css";
 import GoogleLogin, {
     GoogleLoginResponse,
@@ -19,7 +19,14 @@ type State = {
 };
 
 class CreateRoutine extends Component<Props & RouteComponentProps, State> {
+    constructor(props) {
+      super(props);
+    }
+
     render() {
+      if (!this.props.userId) {
+        navigate(-1);
+      }
       return (
         <>
           <NavBar

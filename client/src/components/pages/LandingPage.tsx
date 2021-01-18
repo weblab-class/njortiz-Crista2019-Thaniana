@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect, RouteComponentProps } from "@reach/router";
+import { Link, navigate, Redirect, RouteComponentProps } from "@reach/router";
 import "./LandingPage.css";
 import GoogleLogin, {
     GoogleLoginResponse,
@@ -19,8 +19,9 @@ type State = {
 
   class LandingPage extends Component<Props & RouteComponentProps, State> {
     render() {
-      // if (this.state.loggedIn === true){return(<a href="/Dashboard"/>)}
-      //trying to shift to the dashboard page as soon as we log in, not working not sure why
+      if (this.props.userId) {
+        navigate("/dashboard");
+      }
       return (
         <>
           <div className="container">

@@ -1,6 +1,6 @@
 import NavBar from "../modules/NavBar";
 import React, { Component } from 'react';
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps, navigate } from "@reach/router";
 import "./Feed.css";
 import SingleRoutine from "../modules/SingleRoutine.tsx";
 
@@ -46,6 +46,9 @@ class Feed extends Component<Props & RouteComponentProps, State> {
   }
 
     render() {
+      if (!this.props.userId) {
+        navigate(-1);
+      }
       let routinesList = null;
       const hasStories = this.state.routines.length !== 0;
       if (hasStories) {

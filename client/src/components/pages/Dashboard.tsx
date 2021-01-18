@@ -1,6 +1,6 @@
 import NavBar from "../modules/NavBar";
 import React, { Component } from 'react';
-import { RouteComponentProps } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import "./Dashboard.css";
 import GoogleLogin, {
     GoogleLoginResponse,
@@ -20,7 +20,13 @@ type State = {
 };
 
 class Dashboard extends Component<Props & RouteComponentProps, State> {
+    constructor(props) {
+      super(props);
+    }
     render() {
+      if (!this.props.userId) {
+        navigate(-1);
+      }
       return (
         <>
           <NavBar
