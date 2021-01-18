@@ -126,15 +126,16 @@ router.post("/edit-routine", (req, res) => {
   if (updatedRoutine.owner_id != req.user._id) {
     throw new Error("Not allowed to edit another user's routine.");
   }
-  else { 
-    Routine.findById(updatedRoutine._id).then((routine: RoutineInterface) => {
+  if (hasRoutineWithName(req.user._id, updatedRoutine.name)) {
+    throw new Error("You already have a routine with this name.");
+  }
+  Routine.findById(updatedRoutine._id).then((routine: RoutineInterface) => {
     routine.name = updatedRoutine.name;
     routine.duration = updatedRoutine.duration;
     routine.intervals = updatedRoutine.intervals;
     routine.isPublic = updatedRoutine.isPublic;
     routine.save().then((savedRoutine: RoutineInterface) => res.send(savedRoutine));
     });
-  }
 });
 
 // anything else falls to this "not found" case
