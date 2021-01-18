@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps, Link } from "@reach/router";
 import GoogleLogin, {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
@@ -42,8 +42,8 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
                 />
               )}
             </div>
-            <div className="item nav-button"><a href="/dashboard">View Routines</a></div>
-            <div className="item nav-button"><a href="/feed">Search</a></div>
+            <div className="item nav-button"><Link to="/dashboard">View Routines</Link></div>
+            <div className="item nav-button"><Link to="/feed">Search</Link></div>
           </ul>
         </div>
       </>
