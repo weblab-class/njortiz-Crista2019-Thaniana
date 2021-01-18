@@ -26,7 +26,7 @@ export interface Interval extends Document {
   name: string;
   startTime: number;
   endTime: number;
-  _id: string;
+  _id?: string;
 }
 
 export interface Routine extends Document {
