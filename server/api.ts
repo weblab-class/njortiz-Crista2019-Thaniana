@@ -24,9 +24,12 @@ router.post("/initsocket", (req, res) => {
   res.send({});
 });
 
-// takes { owner_id: string } as parameter and returns array of all routines saved by that user
+// uses req.user to return array of all routines saved by that user
 router.get("/saved-routines", (req, res) => {
-  Routine.find({ owner_id: req.query.owner_id }).then((routines: RoutineInterface[]) => {
+  if (!req.user) {
+    throw new Error("You must be logged in to access your saved routines.");
+  }
+  Routine.find({ owner_id: req.user._id }).then((routines: RoutineInterface[]) => {
     res.send(routines);
   })
 });
@@ -43,22 +46,41 @@ router.get("/public-routines", (req, res) => {
   Routine.find({ isPublic: true }).then((routines: RoutineInterface[]) => res.send(routines));
 });
 
-// takes { routine: Routine } as parameter and adds the new Routine to the database
+// takes { name: string, duaration: number, intervals: Interval[], isPublic: boolean } as parameters
+// creates new Routine to add to the database, using req.user
 router.post("/new-routine", (req, res) => {
-  const newRoutine = new Routine({...req.body.routine});
+  if (!req.user) {
+    throw new Error("You must be logged in to create a new routine.");
+  }
+  const newRoutine = new Routine({
+    name: req.body.name,
+    duration: req.body.duration,
+    intervals: req.body.intervals,
+    isPublic: req.body.isPublic,
+    creator_id: req.user._id,
+    owner_id: req.user._id,
+  });
   newRoutine.save().then((routine: RoutineInterface) => res.send(routine));
 });
 
 // takes { routine: Routine } as parameter and updates the Routine with the same _id to have the new parameters
 router.post("/edit-routine", (req, res) => {
   const updatedRoutine = req.body.routine;
-  Routine.findById(updatedRoutine._id).then((routine: RoutineInterface) => {
+  if (!req.user) {
+    throw new Error("You must be logged in to edit a routine.");
+  }
+  if (updatedRoutine.owner_id != req.user._id) {
+    throw new Error("Not allowed to edit another user's routine.");
+  }
+  else { 
+    Routine.findById(updatedRoutine._id).then((routine: RoutineInterface) => {
     routine.name = updatedRoutine.name;
     routine.duration = updatedRoutine.duration;
     routine.intervals = updatedRoutine.intervals;
     routine.isPublic = updatedRoutine.isPublic;
     routine.save().then((savedRoutine: RoutineInterface) => res.send(savedRoutine));
-  });
+    });
+  }
 });
 
 // anything else falls to this "not found" case

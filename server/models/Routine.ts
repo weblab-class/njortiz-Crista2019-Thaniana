@@ -36,7 +36,7 @@ export interface Routine extends Document {
     isPublic: boolean;
     creator_id: string;
     owner_id: string;
-    _id?: string;
+    _id: string;
 }
 
 const RoutineModel = model<Routine>("Routine", RoutineSchema);
