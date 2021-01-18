@@ -30,18 +30,18 @@
 } */
 
 .nav-button {
-  background-color: #3e885b;
+  background-color: var(--primary);
   border-radius: 25px;
   text-align: center;
   height: fit-content;
 }
 
 .nav-button a{
-  color: #bfdadd;
+  color: var(--lightblue);
   text-decoration: none;
 }
 
 .nav-button:hover {
-  background-color: #366b4b;
+  background-color: var(--primary--dark);
   cursor: pointer;
 }

@@ -46,3 +46,14 @@
     flex-direction: column;
     margin-right: 0%;
 }
+
+.add-routine {
+    background-color: var(--primary);
+    border-radius: 100%;
+    width: var(--l);
+}
+
+.add-routine a {
+    text-decoration: none;
+    color: var(--lightblue)
+}

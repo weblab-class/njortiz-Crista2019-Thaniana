@@ -1,12 +1,12 @@
 import NavBar from "../modules/NavBar";
-import React, { Component } from 'react';
-import { navigate, RouteComponentProps } from "@reach/router";
+import React, { Component } from "react";
+import { navigate, RouteComponentProps, Link } from "@reach/router";
 import "./Dashboard.css";
 import GoogleLogin, {
-    GoogleLoginResponse,
-    GoogleLoginResponseOffline,
-    GoogleLogout,
-  } from "react-google-login";
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+  GoogleLogout,
+} from "react-google-login";
 
 import RoutineList from "../modules/RoutineList";
 import User from "../../../../shared/User";
@@ -23,36 +23,37 @@ type State = {
 };
 
 class Dashboard extends Component<Props & RouteComponentProps, State> {
-    constructor(props) {
-      super(props);
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    if (!this.props.user) {
+      navigate(-1);
+      return null;
     }
-    render() {
-      if (!this.props.user) {
-        navigate(-1);
-        return null;
-      }
-      return (
-        <>
-          <NavBar
+    return (
+      <>
+        <NavBar
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           user={this.props.user}
         />
-        <div
-          className="Profile-Pic-Container"
-        >
+        <div className="Profile-Pic-Container">
           <div className="Profile-Pic" />
         </div>
         <div className="center-text">
-        <h1 className="Profile-name">{this.props.user.name}'s Routines</h1>
+          <h1 className="Profile-name">{this.props.user.name}'s Routines</h1>
         </div>
-        <hr/>
+        <hr />
         <div className="center-text">
           <RoutineList user={this.props.user} />
+          <div className="add-routine">
+            <Link to="/new_routine">+</Link>
+          </div>
         </div>
-        </>
-      )
-    }
+      </>
+    );
   }
-  
-  export default Dashboard;
+}
+
+export default Dashboard;
