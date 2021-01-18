@@ -48,12 +48,32 @@ router.get("/public-routines", (req, res) => {
   Routine.find({ isPublic: true }).then((routines: RoutineInterface[]) => res.send(routines));
 });
 
+
+//helper function to determine if a user already has a routine with a given name
+const hasRoutineWithName = (userId: string | undefined, name: string): boolean => {
+  let result: boolean = false;
+  Routine.find({ owner_id: userId }).then((routines: RoutineInterface[]) => {
+    for (let routine of routines) {
+      if (routine.name == name) {
+        result = true;
+      }
+    }
+  });
+
+  return result;
+}
+
+
 // takes { name: string, duration: number, intervals: Interval[], isPublic: boolean } as parameters
 // creates new Routine to add to the database, using req.user
 router.post("/new-routine", (req, res) => {
   if (!req.user) {
     throw new Error("You must be logged in to create a new routine.");
   }
+  if (hasRoutineWithName(req.user._id, req.body.name)) {
+    throw new Error("You already have a routine with this name.");
+  }
+
   const newRoutine = new Routine({
     name: req.body.name,
     duration: req.body.duration,
@@ -79,6 +99,10 @@ router.post("/save-routine", (req, res) => {
     }
     User.findById(originalRoutine.creator_id).then((user: UserInterface) => {
       const newName = `${originalRoutine.name} (created by: ${user.name})`;
+      if (hasRoutineWithName(req.user?._id, newName)) {
+        throw new Error("You already have a routine with this name.");
+      }
+
       const copyRoutine = new Routine({
         name: newName,
         duration: originalRoutine.duration,
