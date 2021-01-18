@@ -50,6 +50,7 @@ class Feed extends Component<Props & RouteComponentProps, State> {
     render() {
       if (!this.props.user) {
         navigate(-1);
+        return null;
       }
       let routinesList = null;
       const hasStories = this.state.routines.length !== 0;
