@@ -47,8 +47,10 @@ class Dashboard extends Component<Props & RouteComponentProps, State> {
         <hr />
         <div className="center-text">
           <RoutineList user={this.props.user} />
-          <div className="add-routine">
-            <Link to="/new_routine">+</Link>
+          <div className="item-right">
+            <div className="add-routine">
+              <Link to="/new_routine">+</Link>
+            </div>
           </div>
         </div>
       </>

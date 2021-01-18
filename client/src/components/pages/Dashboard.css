@@ -47,6 +47,12 @@
     margin-right: 0%;
 }
 
+.item-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20%;
+}
+
 .add-routine {
     background-color: var(--primary);
     border-radius: 100%;
