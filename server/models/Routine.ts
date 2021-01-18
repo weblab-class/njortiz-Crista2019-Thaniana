@@ -1,4 +1,5 @@
 import { Schema, model, Document } from "mongoose";
+import { User, UserSchema } from "./User";
 
 /*
 The Interval ranges over [startTime, endTime).
@@ -18,8 +19,8 @@ const RoutineSchema = new Schema({
   duration: Number, 
   intervals: [IntervalSchema],
   isPublic: Boolean,
-  creator_id: String, // _id of the User who originally created the routine
-  owner_id: String, // _id of the User that has this routine saved
+  creator: UserSchema, // User object representing the routine's original creator
+  owner: UserSchema, // User object representing whoever has the routine saved
 });
 
 export interface Interval extends Document {
@@ -34,8 +35,8 @@ export interface Routine extends Document {
     duration: number;
     intervals: Interval[];
     isPublic: boolean;
-    creator_id: string;
-    owner_id: string;
+    creator: User;
+    owner: User;
     _id: string;
 }
 
