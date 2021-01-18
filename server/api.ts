@@ -4,7 +4,9 @@ import socketManager from "./server-socket";
 const router = express.Router();
 
 const Routine = require("./models/Routine");
+import User from "./models/User";
 import RoutineInterface from "../shared/Routine";
+import UserInterface from "../shared/User";
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -46,7 +48,7 @@ router.get("/public-routines", (req, res) => {
   Routine.find({ isPublic: true }).then((routines: RoutineInterface[]) => res.send(routines));
 });
 
-// takes { name: string, duaration: number, intervals: Interval[], isPublic: boolean } as parameters
+// takes { name: string, duration: number, intervals: Interval[], isPublic: boolean } as parameters
 // creates new Routine to add to the database, using req.user
 router.post("/new-routine", (req, res) => {
   if (!req.user) {
@@ -61,6 +63,34 @@ router.post("/new-routine", (req, res) => {
     owner_id: req.user._id,
   });
   newRoutine.save().then((routine: RoutineInterface) => res.send(routine));
+});
+
+// takes { originalRoutine_id: string } and saves a copy of the routine, with its owner changed to req.user
+router.post("/save-routine", (req, res) => {
+  if (!req.user) {
+    throw new Error("You must be logged in to save a routine.");
+  }
+  Routine.findById(req.body.originalRoutine_id).then((originalRoutine: RoutineInterface) => {
+    if (!originalRoutine.isPublic) {
+      throw new Error("You cannot save a private routine.")
+    }
+    if (originalRoutine.creator_id == req.user?._id) {
+      throw new Error("You already own this routine.")
+    }
+    User.findById(originalRoutine.creator_id).then((user: UserInterface) => {
+      const newName = `${originalRoutine.name} (created by: ${user.name})`;
+      const copyRoutine = new Routine({
+        name: newName,
+        duration: originalRoutine.duration,
+        intervals: originalRoutine.intervals,
+        isPublic: false,
+        creator_id: originalRoutine.creator_id,
+        owner_id: req.user?._id,
+      });
+
+      copyRoutine.save().then((routine: RoutineInterface) => res.send(routine));
+    });
+  });
 });
 
 // takes { routine: Routine } as parameter and updates the Routine with the same _id to have the new parameters
