@@ -1,6 +1,5 @@
 import { Schema, model, Document } from "mongoose";
-import UserSchema from "./User";
-import { User } from "./User";
+import { User, UserSchema } from "./User";
 
 /*
 The Interval ranges over [startTime, endTime).

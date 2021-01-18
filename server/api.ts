@@ -28,10 +28,11 @@ router.post("/initsocket", (req, res) => {
 
 // uses req.user to return array of all routines saved by that user
 router.get("/saved-routines", (req, res) => {
+  console.log(req.user);
   if (!req.user) {
     throw new Error("You must be logged in to access your saved routines.");
   }
-  Routine.find({ owner_id: req.user._id }).then((routines: RoutineInterface[]) => {
+  Routine.find({ "owner._id": req.user._id}).then((routines: RoutineInterface[]) => {
     res.send(routines);
   })
 });
@@ -52,7 +53,7 @@ router.get("/public-routines", (req, res) => {
 //helper function to determine if a user already has a routine with a given name
 const hasRoutineWithName = (userId: string | undefined, name: string): boolean => {
   let result: boolean = false;
-  Routine.find({ owner_id: userId }).then((routines: RoutineInterface[]) => {
+  Routine.find({ "owner._id": userId }).then((routines: RoutineInterface[]) => {
     for (let routine of routines) {
       if (routine.name == name) {
         result = true;
@@ -79,8 +80,8 @@ router.post("/new-routine", (req, res) => {
     duration: req.body.duration,
     intervals: req.body.intervals,
     isPublic: req.body.isPublic,
-    creator_id: req.user._id,
-    owner_id: req.user._id,
+    creator: req.user,
+    owner: req.user,
   });
   newRoutine.save().then((routine: RoutineInterface) => res.send(routine));
 });
@@ -94,26 +95,24 @@ router.post("/save-routine", (req, res) => {
     if (!originalRoutine.isPublic) {
       throw new Error("You cannot save a private routine.")
     }
-    if (originalRoutine.creator_id == req.user?._id) {
+    if (originalRoutine.creator._id == req.user?._id) {
       throw new Error("You already own this routine.")
     }
-    User.findById(originalRoutine.creator_id).then((user: UserInterface) => {
-      const newName = `${originalRoutine.name} (created by: ${user.name})`;
-      if (hasRoutineWithName(req.user?._id, newName)) {
-        throw new Error("You already have a routine with this name.");
-      }
+    const newName = `${originalRoutine.name} (created by: ${originalRoutine.creator.name})`;
+    if (hasRoutineWithName(req.user?._id, newName)) {
+      throw new Error("You already have a routine with this name.");
+    }
 
-      const copyRoutine = new Routine({
-        name: newName,
-        duration: originalRoutine.duration,
-        intervals: originalRoutine.intervals,
-        isPublic: false,
-        creator_id: originalRoutine.creator_id,
-        owner_id: req.user?._id,
-      });
-
-      copyRoutine.save().then((routine: RoutineInterface) => res.send(routine));
+    const copyRoutine = new Routine({
+      name: newName,
+      duration: originalRoutine.duration,
+      intervals: originalRoutine.intervals,
+      isPublic: false,
+      creator: originalRoutine.creator,
+      owner: req.user,
     });
+
+    copyRoutine.save().then((routine: RoutineInterface) => res.send(routine));
   });
 });
 
@@ -123,7 +122,7 @@ router.post("/edit-routine", (req, res) => {
   if (!req.user) {
     throw new Error("You must be logged in to edit a routine.");
   }
-  if (updatedRoutine.owner_id != req.user._id) {
+  if (updatedRoutine.owner._id != req.user._id) {
     throw new Error("Not allowed to edit another user's routine.");
   }
   if (hasRoutineWithName(req.user._id, updatedRoutine.name)) {

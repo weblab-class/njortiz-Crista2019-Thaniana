@@ -1,6 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 
-const UserSchema = new Schema({
+export const UserSchema = new Schema({
   name: String,
   googleid: String,
 });
