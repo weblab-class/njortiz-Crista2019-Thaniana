@@ -73,7 +73,6 @@ class Feed extends Component<Props & RouteComponentProps, State> {
           handleLogout={this.props.handleLogout}
           user={this.props.user}
         />
-        <NewSearch />
         <div className="container">
           <div>
             {routinesList}
