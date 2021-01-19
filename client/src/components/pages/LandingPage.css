@@ -2,7 +2,7 @@
     font-weight: 300;
     font-size: 96px;
     text-size-adjust: 50%;
-    margin-right: 50px;
+    margin-right: 100px;
 }
 .content {
     font-weight: 100;
@@ -10,7 +10,7 @@
     margin-bottom: 20px;
 }
 
-.container {
+.landing-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -21,7 +21,6 @@
     text-align: center;
     justify-content: center;
     flex-direction: column;
-    margin-right: 20%;
 }
 
 .side-divs {
