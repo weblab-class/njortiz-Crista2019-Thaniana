@@ -45,7 +45,7 @@ class App extends Component<{}, State> {
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user: User) => {
       this.setState({ user: user });
-      navigate("/dashboard");//for some reason does not link to the dashboard 
+      navigate("/dashboard"); 
     });
   };
 
