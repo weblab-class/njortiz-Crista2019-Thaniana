@@ -85,3 +85,5 @@ interface NewSearchProps {
       return <NewPostInput defaultText="Search" onSubmit={this.addStory} />;
     }
   }
+
+  export default NewSearch;
