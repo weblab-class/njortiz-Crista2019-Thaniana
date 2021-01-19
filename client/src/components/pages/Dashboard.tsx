@@ -28,7 +28,7 @@ class Dashboard extends Component<Props & RouteComponentProps, State> {
   }
   render() {
     if (!this.props.user) {
-      navigate(-1);
+      navigate("/");
       return null;
     }
     return (
