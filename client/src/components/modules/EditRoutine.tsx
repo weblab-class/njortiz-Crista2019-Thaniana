@@ -87,11 +87,11 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
   // submit the interva; object to the array in state
   submitInterval = (event) => {
     // make interval object and add to array in state
-    console.log()
     let IntervalObject = {
       name: this.state.interval_name,
-      startTime: this.state.interval_start_time,
-      endTime: this.state.interval_end_time,
+      // conversation from minutes into seconds
+      startTime: this.state.interval_start_time * 60,
+      endTime: this.state.interval_end_time * 60,
     };
 
     // reset states for adding new interval data
@@ -109,6 +109,13 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
 
   // save the routine: this entails making an api call to send the Routine state to the DB as a new user routine and then clearing the states completely
   saveRoutine = (event) => {
+
+    // converting duration to seconds
+    this.setState({
+        duration: this.state.duration * 60,
+    });
+
+    // API send should occur now
 
     // clearing the state for a new routine 
     // TODO:
@@ -180,7 +187,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
           {/* list out all the added intervals */}
           <div>
             {this.state.intervals.map(function (d, idx) {
-              return <li key={idx}><i>{d.name} | {d.endTime - d.startTime} min</i></li>;
+              return <li key={idx}><i>{d.name} | {(d.endTime - d.startTime) / 60} min</i></li>;
             })}
           </div>
           <hr />
