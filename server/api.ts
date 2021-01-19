@@ -49,6 +49,13 @@ router.get("/public-routines", (req, res) => {
   Routine.find({ isPublic: true }).then((routines: RoutineInterface[]) => res.send(routines));
 });
 
+// takes { routineId: string } and returns the return with the given id
+router.get("/single-routine", (req, res) => {
+  Routine.findById(req.query.routineId).then((routine: RoutineInterface) => {
+    res.send(routine);
+  });
+});
+
 
 //helper function to determine if a user already has a routine with a given name
 const hasRoutineWithName = (userId: string | undefined, name: string): boolean => {
