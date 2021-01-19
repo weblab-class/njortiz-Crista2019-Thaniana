@@ -62,14 +62,6 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     console.log(this.state);
   };
 
-  //   handleSubmit = event => {
-  //       event.preventDefault();
-  //     //   this.props.onSubmit && this.props.onSubmit(this.state.value);
-  //       this.setState({
-  //           value: "",
-  //       });
-  //   };
-
   // show form for adding a new interval
   addInterval = (event) => {
     this.setState({
@@ -113,8 +105,28 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     console.log(this.state);
   };
 
-  // save the routine
-  saveRoutine = (event) => {};
+  // save the routine: this entails making an api call to send the Routine state to the DB as a new user routine and then clearing the states completely
+  saveRoutine = (event) => {
+
+    // clearing the state for a new routine 
+    // TODO:
+    // (once this is refactored to be edit, this shouldn't matter since these values will get passed in at the begining as either empty as follows for new routines 
+    // or preloaded, which means the routines need to be made deletable/editable rather than just listed)
+      this.setState({
+        name: "New Routine",
+        duration: 0,
+        intervals: [],
+        isPublic: false,
+        creator: this.props.user,
+        owner: this.props.user,
+        _id: "",
+        showAddInterval: false,
+        interval_name: "",
+        interval_start_time: 0,
+        interval_end_time: 0,
+        x: 0,
+      })
+  };
 
   render() {
     if (!this.props.user) {
