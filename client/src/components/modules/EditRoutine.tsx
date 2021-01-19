@@ -4,13 +4,12 @@ import { RouteComponentProps, navigate } from "@reach/router";
 import "./EditRoutine.css";
 import User from "../../../../shared/User";
 import Slider from "react-rangeslider";
-import 'react-rangeslider/lib/index.css'
+import "react-rangeslider/lib/index.css";
 
-interface Interval
-{
-    name: string,
-    startTime: number, 
-    endTime: number, 
+interface Interval {
+  name: string;
+  startTime: number;
+  endTime: number;
 }
 
 type Props = {
@@ -84,20 +83,20 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     });
   };
 
-  updateIntervalTime = value => {
+  updateIntervalTime = (value) => {
     this.setState({
-        x: value,
-        interval_end_time: this.state.interval_start_time + this.state.x
-      });
-  }
+      x: value,
+      interval_end_time: this.state.interval_start_time + this.state.x,
+    });
+  };
 
   // submit the interva; object to the array in state
   submitInterval = (event) => {
     // make interval object and add to array in state
     let IntervalObject = {
-        name: this.state.interval_name,
-        startTime: this.state.interval_start_time, 
-        endTime: this.state.interval_end_time 
+      name: this.state.interval_name,
+      startTime: this.state.interval_start_time,
+      endTime: this.state.interval_end_time,
     };
 
     // reset states for adding new interval data
@@ -108,9 +107,9 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
       interval_end_time: this.state.interval_end_time,
       duration: this.state.duration + this.state.x,
       x: 0,
-      intervals: this.state.intervals.concat(IntervalObject)
+      intervals: this.state.intervals.concat(IntervalObject),
     });
-    console.log(this.state)
+    console.log(this.state);
   };
 
   // save the routine
@@ -161,17 +160,22 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
                   <label>
                     <p>Duration (minutes):</p>
                     <div className="slider">
-                        <Slider
+                      <Slider
                         min={0}
                         max={60}
                         value={this.state.x}
                         onChange={this.updateIntervalTime}
-                        />
+                      />
                     </div>
                   </label>
                 </form>
-                <div className="btn" onClick={this.submitInterval}>
-                  Add To Routine
+                <div className="btn-inline">
+                  <div className="btn" onClick={this.submitInterval}>
+                    Add To Routine
+                  </div>
+                  <div className="btn cancel" onClick={this.addInterval}>
+                    Cancel
+                  </div>
                 </div>
               </div>
             ) : (
