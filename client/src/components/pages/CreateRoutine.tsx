@@ -26,10 +26,10 @@ class CreateRoutine extends Component<Props & RouteComponentProps, State> {
   }
 
   render() {
-    if (!this.props.user) {
-      navigate("/");
-      return null;
-    }
+    // if (!this.props.user) {
+    //   navigate("/");
+    //   return null;
+    // }
     return (
       <>
         <NavBar

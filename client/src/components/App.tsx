@@ -52,7 +52,7 @@ class App extends Component<{}, State> {
   handleLogout = () => {
     this.setState({ user: undefined });
     post("/api/logout");
-    navigate("/")
+    navigate("/");
   };
 
   render() {
