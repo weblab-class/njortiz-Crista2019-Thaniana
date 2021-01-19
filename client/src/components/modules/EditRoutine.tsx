@@ -3,8 +3,10 @@ import React, { Component } from "react";
 import { RouteComponentProps, navigate } from "@reach/router";
 import "./EditRoutine.css";
 import User from "../../../../shared/User";
+import Routine from "../../../../shared/Routine";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
+import { get, post } from "../../utilities";
 
 interface Interval {
   name: string;
@@ -112,20 +114,36 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     // TODO:
     // (once this is refactored to be edit, this shouldn't matter since these values will get passed in at the begining as either empty as follows for new routines 
     // or preloaded, which means the routines need to be made deletable/editable rather than just listed)
-      this.setState({
-        name: "New Routine",
-        duration: 0,
-        intervals: [],
-        isPublic: false,
-        creator: this.props.user,
-        owner: this.props.user,
-        _id: "",
-        showAddInterval: false,
-        interval_name: "",
-        interval_start_time: 0,
-        interval_end_time: 0,
-        x: 0,
-      })
+      get("/api/saved-routines").then((routines: Routine[]) => {
+        for (let routine of routines) {
+          // TODO: show error message when trying to create a routine with a pre-existing name
+          if (routine.name === this.state.name) {
+            return;
+          }
+        }
+        
+        if (this.state._id === "") { // this is a new routine since it has no id
+          post("/api/new-routine", { 
+            name: this.state.name, 
+            duration: this.state.duration, 
+            intervals: this.state.intervals, 
+            isPublic: this.state.isPublic
+          }).then(() => navigate(-1))
+        }
+        else {
+          post("/api/edit-routine", {
+            routine: {
+              name: this.state.name,
+              duration: this.state.duration,
+              intervals: this.state.intervals,
+              isPublic: this.state.isPublic,
+              owner: this.state.owner,
+              creator: this.state.creator,
+              _id: this.state._id,
+            }
+          }).then(() => navigate(-1));
+        }
+      });
   };
 
   render() {
