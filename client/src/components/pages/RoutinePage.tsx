@@ -20,7 +20,7 @@ type Props = {
 };
 type State = {
   routine: Routine;
-  isTimerRunning: boolean;
+  timer: NodeJS.Timeout;
   secondsElapsed: number;
   currentInterval: Interval;
 };
@@ -30,7 +30,7 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
       super(props);
       this.state = {
           routine: null,
-          isTimerRunning: false,
+          timer: null,
           secondsElapsed: 0,
           currentInterval: null
       };
@@ -42,6 +42,49 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
                 routine: routine
             });
         });
+    }
+
+    getCurrentInterval = (): Interval => {
+      if (!this.state.timer && this.state.secondsElapsed === 0) {
+        return null;
+      }
+
+      for (let interval of this.state.routine?.intervals) {
+        if (interval.startTime <= this.state.secondsElapsed && this.state.secondsElapsed < interval.endTime) {
+          return interval;
+        }
+      }
+      return null;
+    }
+
+    startTimer = (): void => {
+      if (!this.state.timer) {
+        this.setState({
+          timer: setInterval(() => {
+            if (this.state.secondsElapsed === this.state.routine.duration) {
+              clearInterval(this.state.timer);
+              this.setState({timer: null });
+            } else {
+              this.setState({ secondsElapsed: this.state.secondsElapsed + 1})
+            }
+          }, 1000)
+        });
+      }
+    }
+
+    pauseTimer = (): void => {
+      if (this.state.timer) {
+        clearInterval(this.state.timer);
+        this.setState({
+          timer: null,
+        });
+      }
+    }
+
+    restartTimer = (): void => {
+      this.setState({
+        secondsElapsed: 0,
+      })
     }
 
     render() {
@@ -59,9 +102,12 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
         <ul>
             <li>Routine name: {this.state.routine?.name} </li>
             <li>Routine duration: {this.state.routine?.duration}</li>
-            <li>Intervals: {this.state.routine?.intervals.map((interval: Interval) => {interval.name})}</li>
-            <li>Current Interval: {this.state.currentInterval?.name}</li>
+            <li>Intervals: {this.state.routine?.intervals.map((interval: Interval) => <span key={interval.startTime}>{interval.name} </span>)}</li>
+            <li>Current Interval: {this.getCurrentInterval()?.name}</li>
             <li>Seconds Elapsed: {this.state.secondsElapsed}</li>
+            <button onClick={this.startTimer}>Start Timer</button>
+            <button onClick={this.pauseTimer}>Pause Timer</button>
+            <button onClick={this.restartTimer}>Restart Timer</button>
         </ul>
         </>
       )
