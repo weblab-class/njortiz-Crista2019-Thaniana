@@ -46,10 +46,10 @@ class Feed extends Component<Props & RouteComponentProps, State> {
   }
 
   render() {
-    if (!this.props.user) {
-      navigate("/");
-      return null;
-    }
+    // if (!this.props.user) {
+    //   navigate("/");
+    //   return null;
+    // }
     let routinesList = null;
     const hasStories = this.state.routines.length !== 0;
     if (hasStories) {

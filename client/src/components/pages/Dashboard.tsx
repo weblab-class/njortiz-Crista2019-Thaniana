@@ -27,10 +27,10 @@ class Dashboard extends Component<Props & RouteComponentProps, State> {
     super(props);
   }
   render() {
-    if (!this.props.user) {
-      navigate("/");
-      return null;
-    }
+    // if (!this.props.user) {
+    //   navigate("/");
+    //   return null;
+    // }
     return (
       <>
         <NavBar
@@ -42,7 +42,7 @@ class Dashboard extends Component<Props & RouteComponentProps, State> {
           <div className="Profile-Pic" />
         </div>
         <div className="center-text">
-          <h1 className="Profile-name">{this.props.user.name}'s Routines</h1>
+          <h1 className="Profile-name">{this.props.user?.name}'s Routines</h1>
         </div>
         <hr />
         <div className="center-text">

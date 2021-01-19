@@ -20,10 +20,10 @@ type State = {
 
 class LandingPage extends Component<Props & RouteComponentProps, State> {
   render() {
-    if (this.props.user) {
-      navigate("/dashboard");
-      return null;
-    }
+    // if (this.props.user) {
+    //   navigate("/dashboard");
+    //   return null;
+    // }
     return (
       <>
         <div className="landing-container">
