@@ -1,18 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "@reach/router";
+import { Link, RouteComponentProps } from "@reach/router";
 
-/**
- * Story is a component that renders creator and content of a story
- */
+import Routine from "../../../../shared/Routine";
 
-export interface Routine {
-  _id: string;
-  name: string;
-  creator_id: string;
-  content: string;
+type Props = {
+  routine: Routine;
 }
-
-class SingleRoutine extends Component<Routine> {
+class SingleRoutine extends Component<Props & RouteComponentProps> {
   constructor(props) {
     super(props);
   }
@@ -20,8 +14,7 @@ class SingleRoutine extends Component<Routine> {
   render() {
     return (
       <div className="Single-Routine">
-        <span className="Single-Routine-Name">{this.props.name}</span>
-        <p className="Single-Rountine-type">{this.props.content}</p>
+        <Link to={`/routines/${this.props.routine._id}`} className="Single-Routine-Name"><strong>{this.props.routine.name}</strong> | {this.props.routine.owner.name} </Link>
       </div>
     );
   }

@@ -4,7 +4,7 @@ import { RouteComponentProps, navigate } from "@reach/router";
 import "./Feed.css";
 import SingleRoutine from "../modules/SingleRoutine.tsx";
 
-import { Routine } from "../modules/SingleRoutine";
+import  Routine  from "../../../../shared/Routine";
 
 import { get } from "../../utilities";
 
@@ -54,12 +54,7 @@ class Feed extends Component<Props & RouteComponentProps, State> {
     const hasStories = this.state.routines.length !== 0;
     if (hasStories) {
       routinesList = this.state.routines.map((routinesObj) => (
-        <SingleRoutine
-          _id={routinesObj._id}
-          name={routinesObj.name}
-          creator_id={routinesObj.creator_id}
-          content={routinesObj.content} //actually the routine name which I do not see in the database as of now
-        />
+        <SingleRoutine key={routinesObj._id} routine={routinesObj}/>
       ));
     } else {
       routinesList = <div>No stories!</div>;
