@@ -16,11 +16,29 @@
     margin-right: 20%;
     margin-top: 20px;
     font-size: var(--s);
+    height: fit-content;
 }
 
 .btn:hover {
     background-color: var(--primary--dark);
     cursor: pointer;
+}
+
+.btn-inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    float: right;
+    margin-right: 20%;
+}
+
+.cancel {
+    background: var(--medgrey);
+    color: black
+}
+
+.cancel:hover {
+    background: var(--darkgrey)
 }
 
 .slider {
