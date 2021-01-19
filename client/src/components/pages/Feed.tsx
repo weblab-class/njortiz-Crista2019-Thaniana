@@ -2,7 +2,8 @@ import NavBar from "../modules/NavBar";
 import React, { Component } from "react";
 import { RouteComponentProps, navigate } from "@reach/router";
 import "./Feed.css";
-import SingleRoutine from "../modules/SingleRoutine.tsx";
+import SingleRoutine from "../modules/SingleRoutine";
+import NewSearch from "../modules/NewSearch"
 
 import { Routine } from "../modules/SingleRoutine";
 
@@ -72,6 +73,7 @@ class Feed extends Component<Props & RouteComponentProps, State> {
           handleLogout={this.props.handleLogout}
           user={this.props.user}
         />
+        <NewSearch />
         <div className="container">
           <div>
             {routinesList}
