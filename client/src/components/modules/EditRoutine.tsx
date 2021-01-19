@@ -3,13 +3,16 @@ import React, { Component } from "react";
 import { RouteComponentProps, navigate } from "@reach/router";
 import "./EditRoutine.css";
 import User from "../../../../shared/User";
+import Slider from "react-rangeslider";
+import 'react-rangeslider/lib/index.css'
+
 
 type Props = {
   user: User;
 };
 type State = {
   loggedIn: boolean;
-  value: string;
+  name: string;
   duration: number;
   intervals: [];
   isPublic: boolean;
@@ -17,77 +20,88 @@ type State = {
   owner: User;
   _id: string;
   showAddInterval: boolean;
-  new_interval: {
-    name: string;
-    startTime: number;
-    endTime: number;
-    _id?: string;
-  };
-}
+  interval_name: string;
+  interval_start_time: number;
+  interval_end_time: number;
+  x: number;
 };
 
 class EditRoutine extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-        loggedIn: false,
-        value: "",
-        duration: 0,
-        intervals: [],
-        isPublic: false,            
-        creator: this.props.user,
-        owner: this.props.user,
-        _id: "",
-        showAddInterval: false,
-        new_interval: {
-            name: "",
-            startTime: 0,
-            endTime: 0,
-            _id?: ""
-        }
-    }
+      loggedIn: false,
+      name: "",
+      duration: 0,
+      intervals: [],
+      isPublic: false,
+      creator: this.props.user,
+      owner: this.props.user,
+      _id: "",
+      showAddInterval: false,
+      interval_name: "",
+      interval_start_time: 0,
+      interval_end_time: 0,
+      x: 0,
+    };
   }
 
-  handleNameChange = event => {
-      this.setState({
-          value: event.target.value,
-      });
+  handleNameChange = (event) => {
+    this.setState({
+      name: event.target.value,
+    });
   };
 
-  togglePublic = event => {
+  togglePublic = (event) => {
     this.setState({
-        isPublic: ! this.state.isPublic,
+      isPublic: !this.state.isPublic,
     });
     console.log(this.state);
-    
-};
+  };
 
-//   handleSubmit = event => {
-//       event.preventDefault();
-//     //   this.props.onSubmit && this.props.onSubmit(this.state.value);
-//       this.setState({
-//           value: "",
-//       });
-//   };
+  //   handleSubmit = event => {
+  //       event.preventDefault();
+  //     //   this.props.onSubmit && this.props.onSubmit(this.state.value);
+  //       this.setState({
+  //           value: "",
+  //       });
+  //   };
 
-// show form for adding a new interval
-addInterval = event => {
+  // show form for adding a new interval
+  addInterval = (event) => {
     this.setState({
-        showAddInterval: ! this.state.showAddInterval,
+      showAddInterval: !this.state.showAddInterval,
     });
-}
+  };
 
-// submit the interva; object to the array in state
-submitInterval = event => {
+  handleIntNameChange = (event) => {
     this.setState({
-        showAddInterval: ! this.state.showAddInterval,
+      interval_name: event.target.value,
     });
-}
+  };
 
-// save the routine
-saveRoutine = event => {
-    
-}
+  updateIntervalTime = value => {
+    this.setState({
+        x: value,
+      });
+  }
+
+  // submit the interva; object to the array in state
+  submitInterval = (event) => {
+    // reset states for adding new interval data
+    this.setState({
+      showAddInterval: !this.state.showAddInterval,
+      interval_name: "",
+      interval_start_time: this.state.interval_end_time,
+      interval_end_time: this.state.interval_end_time + this.state.x,
+      duration: this.state.duration + this.state.x,
+      x: 0
+    });
+    console.log(this.state)
+  };
+
+  // save the routine
+  saveRoutine = (event) => {};
 
   render() {
     if (!this.props.user) {
@@ -96,41 +110,69 @@ saveRoutine = event => {
     }
     return (
       <>
-      <div className="container">
+        <div className="container">
           {/* main form */}
-        <div>
+          <div>
             <form>
-                <label>
-                    <p>Routine Name:</p>
-                    <input type="text" value={this.state.value} onChange={this.handleNameChange}></input>
-                </label>
-                <label>
-                    <p>Make Private?</p>
-                    <input type="checkbox" checked={this.state.isPublic} onChange={this.togglePublic}></input>
-                </label>
-                <label>
-                    <p>Total Duration: </p>
-                    <p>{this.state.duration}</p>
-                </label>
+              <label>
+                <p>Routine Name:</p>
+                <input type="text" value={this.state.name} onChange={this.handleNameChange}></input>
+              </label>
+              <label>
+                <p>Make Public?</p>
+                <input
+                  type="checkbox"
+                  checked={this.state.isPublic}
+                  onChange={this.togglePublic}
+                ></input>
+              </label>
+              <label>
+                <p>Total Duration: </p>
+                <p>{this.state.duration}</p>
+              </label>
             </form>
-        </div>
-        <div>
+          </div>
+          <div>
             {/* div for adding a new interval */}
-        {this.state.showAddInterval ? 
-            <div>
+            {this.state.showAddInterval ? (
+              <div>
                 <form>
-                these will be the interval options
+                  <label>
+                    <p>Interval Name: </p>
+                    <input
+                      type="text"
+                      value={this.state.interval_name}
+                      onChange={this.handleIntNameChange}
+                    ></input>
+                  </label>
+                  <label>
+                    <p>Duration (minutes):</p>
+                    <div className="slider">
+                        <Slider
+                        min={0}
+                        max={60}
+                        value={this.state.x}
+                        onChange={this.updateIntervalTime}
+                        />
+                    </div>
+                  </label>
                 </form>
-                <div className="btn" onClick={this.submitInterval}>Add To Routine</div>
-            </div>
-        :
-            <div className="btn" onClick={this.addInterval}>New Interval</div>
-        }
+                <div className="btn" onClick={this.submitInterval}>
+                  Add To Routine
+                </div>
+              </div>
+            ) : (
+              <div className="btn" onClick={this.addInterval}>
+                New Interval
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="container">
-        <div className="btn submit" onClick={this.saveRoutine}>Save</div>
-      </div>
+        <div className="container">
+          <div className="btn submit" onClick={this.saveRoutine}>
+            Save
+          </div>
+        </div>
       </>
     );
   }

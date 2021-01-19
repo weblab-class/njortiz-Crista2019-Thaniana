@@ -23,6 +23,11 @@
     cursor: pointer;
 }
 
+.slider {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
 .submit {
     text-align: center;
     margin-left: 20%;
