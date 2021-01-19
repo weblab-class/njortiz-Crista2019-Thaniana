@@ -34,7 +34,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      name: "New Routine",
       duration: 0,
       intervals: [],
       isPublic: false,
@@ -86,13 +86,14 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
   updateIntervalTime = (value) => {
     this.setState({
       x: value,
-      interval_end_time: this.state.interval_start_time + this.state.x,
+      interval_end_time: this.state.interval_start_time + value,
     });
   };
 
   // submit the interva; object to the array in state
   submitInterval = (event) => {
     // make interval object and add to array in state
+    console.log()
     let IntervalObject = {
       name: this.state.interval_name,
       startTime: this.state.interval_start_time,
@@ -144,6 +145,15 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
               </label>
             </form>
           </div>
+          <hr />
+          <p>Intervals in {this.state.name}:</p>
+          {/* list out all the added intervals */}
+          <div>
+            {this.state.intervals.map(function (d, idx) {
+              return <li key={idx}><b>{d.name}</b> | {d.endTime - d.startTime} min</li>;
+            })}
+          </div>
+          <hr />
           <div>
             {/* div for adding a new interval */}
             {this.state.showAddInterval ? (
