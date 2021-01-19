@@ -3,7 +3,7 @@ import { RouteComponentProps } from "@reach/router";
 import GoogleLogin, {  GoogleLoginResponse, GoogleLoginResponseOffline, GoogleLogout} from 'react-google-login';
 import "./Skeleton.css";
 
-const GOOGLE_CLIENT_ID = "747028770339-cfhb6js9kp34beoojcm811ijha6kfc4n.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "557034515616-co9vdfbbqi0s9dgiq9l286t9hfa91oim.apps.googleusercontent.com";
 type Props = {
   userId: String;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
