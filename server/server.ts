@@ -11,6 +11,9 @@ import api from "./api";
 // Loads environmental variables
 dotenv.config({});
 
+require('dotenv').config();
+
+
 // Server configuration below
 // TODO change connection URL after setting up your team database
 const mongoConnectionURL = process.env.MONGO_SRV;
