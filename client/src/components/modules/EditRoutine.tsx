@@ -128,7 +128,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
           <div>
             <form>
               <label>
-                <p>Routine Name:</p>
+                <h3>Routine Name:</h3>
                 <input type="text" value={this.state.name} onChange={this.handleNameChange}></input>
               </label>
               <label>
@@ -146,11 +146,11 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
             </form>
           </div>
           <hr />
-          <p>Intervals in {this.state.name}:</p>
+          <h3>Intervals in {this.state.name}:</h3>
           {/* list out all the added intervals */}
           <div>
             {this.state.intervals.map(function (d, idx) {
-              return <li key={idx}><b>{d.name}</b> | {d.endTime - d.startTime} min</li>;
+              return <li key={idx}><i>{d.name} | {d.endTime - d.startTime} min</i></li>;
             })}
           </div>
           <hr />
@@ -168,7 +168,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
                     ></input>
                   </label>
                   <label>
-                    <p>Duration (minutes):</p>
+                    <p>Duration: {this.state.x} Minutes</p>
                     <div className="slider">
                       <Slider
                         min={0}
