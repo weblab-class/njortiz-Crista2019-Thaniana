@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+}
+
+.add-interval-btn {
+    background-color: var(--primary);
+    border-radius: 25px;
+    color: var(--lightblue);
+    width:fit-content;
+    padding: 10px;
+}
+
+.add-interval-btn:hover {
+    background-color: var(--primary--dark);
+    cursor: pointer;
+}

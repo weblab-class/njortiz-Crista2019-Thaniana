@@ -60,13 +60,17 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     
 };
 
-  handleSubmit = event => {
-      event.preventDefault();
-    //   this.props.onSubmit && this.props.onSubmit(this.state.value);
-      this.setState({
-          value: "",
-      });
-  };
+//   handleSubmit = event => {
+//       event.preventDefault();
+//     //   this.props.onSubmit && this.props.onSubmit(this.state.value);
+//       this.setState({
+//           value: "",
+//       });
+//   };
+
+addInterval = event => {
+
+}
 
   render() {
     if (!this.props.user) {
@@ -75,21 +79,35 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     }
     return (
       <>
-      <form>
-          <label>
-              <p>Routine Name:</p>
-              <input type="text" value={this.state.value} onChange={this.handleNameChange}></input>
-          </label>
-          <label>
-              <p>Make Private?</p>
-              <input type="checkbox" checked={this.state.isPublic} onChange={this.togglePublic}></input>
-          </label>
-          <label>
-              <p>Total Duration: </p>
-              <p>{this.state.duration}</p>
-          </label>
-
-      </form>
+      <div className="container">
+          {/* main form */}
+        <div>
+            <form>
+                <label>
+                    <p>Routine Name:</p>
+                    <input type="text" value={this.state.value} onChange={this.handleNameChange}></input>
+                </label>
+                <label>
+                    <p>Make Private?</p>
+                    <input type="checkbox" checked={this.state.isPublic} onChange={this.togglePublic}></input>
+                </label>
+                <label>
+                    <p>Total Duration: </p>
+                    <p>{this.state.duration}</p>
+                </label>
+            </form>
+            <div className="add-interval-btn" onClick={this.addInterval}>add interval</div>
+        </div>
+      {/* div for adding a new interval */}
+        <div>
+            <form>
+            these will be the interval options
+            </form>
+            <div>
+            submit interval
+            </div>
+        </div>
+      </div>
         {/* <form onSubmit={this.handleSubmit}>
         <label>
           Name:
