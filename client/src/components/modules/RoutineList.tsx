@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps, Link } from "@reach/router";
 import Routine from "../../../../shared/Routine";
 import User from "../../../../shared/User";
 import { get, post } from "../../utilities";
@@ -30,7 +30,7 @@ class RoutineList extends Component<Props & RouteComponentProps, State> {
     render() {
         return (
             <ul>
-                {this.state.routines.map(routine => <li>{routine.name}</li>)}
+                {this.state.routines.map(routine => <li key={routine._id}><Link to={`/routines/${routine._id}`}>{routine.name}</Link></li>)}
             </ul>
         );
     }

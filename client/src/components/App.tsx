@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import Feed from "./pages/Feed";
 import Dashboard from "./pages/Dashboard";
 import CreateRoutine from "./pages/CreateRoutine";
+import RoutinePage from "./pages/RoutinePage";
 import { GoogleLoginResponse } from "react-google-login";
 import { socket } from "../client-socket";
 import User from "../../../shared/User";
@@ -69,6 +70,7 @@ class App extends Component<{}, State> {
             <LandingPage path="/" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
             <Feed path="/feed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
             <Dashboard path="/dashboard" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
+            <RoutinePage path="/routines/:routineId" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
             <CreateRoutine path="/new_routine" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
             <Skeleton path="/shouldntneed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.user?._id}/>
             <NotFound default={true} />
