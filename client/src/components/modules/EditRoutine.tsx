@@ -16,6 +16,7 @@ type State = {
   creator: User;
   owner: User;
   _id: string;
+  showAddInterval: boolean;
   new_interval: {
     name: string;
     startTime: number;
@@ -37,6 +38,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
         creator: this.props.user,
         owner: this.props.user,
         _id: "",
+        showAddInterval: false,
         new_interval: {
             name: "",
             startTime: 0,
@@ -68,8 +70,23 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
 //       });
 //   };
 
+// show form for adding a new interval
 addInterval = event => {
+    this.setState({
+        showAddInterval: ! this.state.showAddInterval,
+    });
+}
 
+// submit the interva; object to the array in state
+submitInterval = event => {
+    this.setState({
+        showAddInterval: ! this.state.showAddInterval,
+    });
+}
+
+// save the routine
+saveRoutine = event => {
+    
 }
 
   render() {
@@ -96,25 +113,24 @@ addInterval = event => {
                     <p>{this.state.duration}</p>
                 </label>
             </form>
-            <div className="add-interval-btn" onClick={this.addInterval}>add interval</div>
         </div>
-      {/* div for adding a new interval */}
         <div>
-            <form>
-            these will be the interval options
-            </form>
+            {/* div for adding a new interval */}
+        {this.state.showAddInterval ? 
             <div>
-            submit interval
+                <form>
+                these will be the interval options
+                </form>
+                <div className="btn" onClick={this.submitInterval}>Add To Routine</div>
             </div>
+        :
+            <div className="btn" onClick={this.addInterval}>New Interval</div>
+        }
         </div>
       </div>
-        {/* <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form> */}
+      <div className="container">
+        <div className="btn submit" onClick={this.saveRoutine}>Save</div>
+      </div>
       </>
     );
   }

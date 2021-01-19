@@ -6,15 +6,25 @@
     text-align: center;
 }
 
-.add-interval-btn {
+.btn {
     background-color: var(--primary);
     border-radius: 25px;
     color: var(--lightblue);
     width:fit-content;
     padding: 10px;
+    float: right;
+    margin-right: 20%;
+    margin-top: 20px;
+    font-size: var(--s);
 }
 
-.add-interval-btn:hover {
+.btn:hover {
     background-color: var(--primary--dark);
     cursor: pointer;
+}
+
+.submit {
+    text-align: center;
+    margin-left: 20%;
+    font-size: var(--m);
 }
