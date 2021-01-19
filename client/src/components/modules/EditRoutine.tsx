@@ -6,15 +6,20 @@ import User from "../../../../shared/User";
 import Slider from "react-rangeslider";
 import 'react-rangeslider/lib/index.css'
 
+interface Interval
+{
+    name: string,
+    startTime: number, 
+    endTime: number, 
+}
 
 type Props = {
   user: User;
 };
 type State = {
-  loggedIn: boolean;
   name: string;
   duration: number;
-  intervals: [];
+  intervals: Interval[];
   isPublic: boolean;
   creator: User;
   owner: User;
@@ -30,7 +35,6 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false,
       name: "",
       duration: 0,
       intervals: [],
@@ -83,19 +87,28 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
   updateIntervalTime = value => {
     this.setState({
         x: value,
+        interval_end_time: this.state.interval_start_time + this.state.x
       });
   }
 
   // submit the interva; object to the array in state
   submitInterval = (event) => {
+    // make interval object and add to array in state
+    let IntervalObject = {
+        name: this.state.interval_name,
+        startTime: this.state.interval_start_time, 
+        endTime: this.state.interval_end_time 
+    };
+
     // reset states for adding new interval data
     this.setState({
       showAddInterval: !this.state.showAddInterval,
       interval_name: "",
       interval_start_time: this.state.interval_end_time,
-      interval_end_time: this.state.interval_end_time + this.state.x,
+      interval_end_time: this.state.interval_end_time,
       duration: this.state.duration + this.state.x,
-      x: 0
+      x: 0,
+      intervals: this.state.intervals.concat(IntervalObject)
     });
     console.log(this.state)
   };
