@@ -34,7 +34,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      name: "New Routine",
       duration: 0,
       intervals: [],
       isPublic: false,
@@ -62,14 +62,6 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     console.log(this.state);
   };
 
-  //   handleSubmit = event => {
-  //       event.preventDefault();
-  //     //   this.props.onSubmit && this.props.onSubmit(this.state.value);
-  //       this.setState({
-  //           value: "",
-  //       });
-  //   };
-
   // show form for adding a new interval
   addInterval = (event) => {
     this.setState({
@@ -86,13 +78,14 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
   updateIntervalTime = (value) => {
     this.setState({
       x: value,
-      interval_end_time: this.state.interval_start_time + this.state.x,
+      interval_end_time: this.state.interval_start_time + value,
     });
   };
 
   // submit the interva; object to the array in state
   submitInterval = (event) => {
     // make interval object and add to array in state
+    console.log()
     let IntervalObject = {
       name: this.state.interval_name,
       startTime: this.state.interval_start_time,
@@ -112,8 +105,28 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     console.log(this.state);
   };
 
-  // save the routine
-  saveRoutine = (event) => {};
+  // save the routine: this entails making an api call to send the Routine state to the DB as a new user routine and then clearing the states completely
+  saveRoutine = (event) => {
+
+    // clearing the state for a new routine 
+    // TODO:
+    // (once this is refactored to be edit, this shouldn't matter since these values will get passed in at the begining as either empty as follows for new routines 
+    // or preloaded, which means the routines need to be made deletable/editable rather than just listed)
+      this.setState({
+        name: "New Routine",
+        duration: 0,
+        intervals: [],
+        isPublic: false,
+        creator: this.props.user,
+        owner: this.props.user,
+        _id: "",
+        showAddInterval: false,
+        interval_name: "",
+        interval_start_time: 0,
+        interval_end_time: 0,
+        x: 0,
+      })
+  };
 
   render() {
     if (!this.props.user) {
@@ -127,7 +140,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
           <div>
             <form>
               <label>
-                <p>Routine Name:</p>
+                <h3>Routine Name:</h3>
                 <input type="text" value={this.state.name} onChange={this.handleNameChange}></input>
               </label>
               <label>
@@ -144,6 +157,15 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
               </label>
             </form>
           </div>
+          <hr />
+          <h3>Intervals in {this.state.name}:</h3>
+          {/* list out all the added intervals */}
+          <div>
+            {this.state.intervals.map(function (d, idx) {
+              return <li key={idx}><i>{d.name} | {d.endTime - d.startTime} min</i></li>;
+            })}
+          </div>
+          <hr />
           <div>
             {/* div for adding a new interval */}
             {this.state.showAddInterval ? (
@@ -158,7 +180,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
                     ></input>
                   </label>
                   <label>
-                    <p>Duration (minutes):</p>
+                    <p>Duration: {this.state.x} Minutes</p>
                     <div className="slider">
                       <Slider
                         min={0}

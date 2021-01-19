@@ -6,6 +6,15 @@
     text-align: center;
 }
 
+hr {
+    width: 50%;
+    color: var(--darkgrey);
+}
+
+li {
+    display:block;
+}
+
 .btn {
     background-color: var(--primary);
     border-radius: 25px;
