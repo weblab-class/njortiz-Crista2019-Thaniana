@@ -50,7 +50,6 @@ router.get("/public-routines", (req, res) => {
 });
 
 // takes { routineId: string } and returns the return with the given id
-//question:--> is this only considering the public or taking into account all the routines with the request
 router.get("/single-routine", (req, res) => {
   Routine.findById(req.query.routineId).then((routine: RoutineInterface) => {
     res.send(routine);

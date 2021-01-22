@@ -70,7 +70,7 @@ class Feed extends Component<Props & RouteComponentProps, State> {
         });
       });
     } else {//case where we get an input from the user in the search box
-      get("/api/single-routine" , {routine: this.state.routine_name}).then((routineObjs: Routine[]) => {
+      get("/api/search-routines" , {searchString: this.state.routine_name}).then((routineObjs: Routine[]) => {
         this.setState({
           routines: routineObjs,
         });
