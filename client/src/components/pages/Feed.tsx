@@ -28,7 +28,9 @@ type Props = {
 type State = {
   loggedIn: boolean;
   routines: Routine[];
+  routine_name : string;
 };
+
 
 class Feed extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
@@ -36,6 +38,7 @@ class Feed extends Component<Props & RouteComponentProps, State> {
     this.state = {
       loggedIn: false,
       routines: [],
+      routine_name : "",
     };
   }
   componentDidMount() {
@@ -45,6 +48,35 @@ class Feed extends Component<Props & RouteComponentProps, State> {
       });
     });
   }
+
+  onKeyDown = event => {
+    if(event.keyCode === 13){
+      //press enter
+      this.setState({
+        routine_name: event.target.value,
+      });
+    }
+  };
+
+  getSearchResults = event => {
+    this.setState({
+      routine_name: event.target.value,
+    });
+    console.log(this.state.routine_name)
+    if (this.state.routine_name === ""){
+      get("/api/public-routines").then((routineObjs: Routine[]) => {
+        this.setState({
+          routines: routineObjs,
+        });
+      });
+    } else {//case where we get an input from the user in the search box
+      get("/api/single-routine" , {routine: this.state.routine_name}).then((routineObjs: Routine[]) => {
+        this.setState({
+          routines: routineObjs,
+        });
+      });
+    }
+  };
 
   render() {
     // if (!this.props.user) {
@@ -61,6 +93,7 @@ class Feed extends Component<Props & RouteComponentProps, State> {
       routinesList = <div>No stories!</div>;
     }
 
+
     return (
       <>
         <NavBar
@@ -68,10 +101,13 @@ class Feed extends Component<Props & RouteComponentProps, State> {
           handleLogout={this.props.handleLogout}
           user={this.props.user}
         />
+        <div className="Searchbox">
+          <input className= "inputbox" type = 'text' onChange = {this.getSearchResults} />
+        </div>
         <div className="container">
           <div>
             {routinesList}
-            {console.log(JSON.stringify(this.state.routines))}
+            {/* {console.log(JSON.stringify(this.state.routines))} */}
 
             {/*           
           <SingleRoutine 

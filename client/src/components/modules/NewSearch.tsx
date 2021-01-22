@@ -32,6 +32,7 @@ class NewPostInput extends Component<NewPostInputProps, NewPostInputState> {
     });
   };
 
+
   // called when the user hits "Submit" for a new post
   handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();

@@ -2,3 +2,12 @@
     display: flex;
     justify-content: center;
 }
+
+.Searchbox {
+    text-align: center;
+    padding: 3%;
+}
+
+.inputbox {
+    width: 85%;
+}
