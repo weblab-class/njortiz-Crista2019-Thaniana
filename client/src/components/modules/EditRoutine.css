@@ -60,3 +60,23 @@ li {
     margin-left: 20%;
     font-size: var(--m);
 }
+
+.tooltip-right {
+    font-weight: lighter;
+    font-size: var(--s);
+    margin: 20px 10px 40px 10px;
+    font-style: italic;
+    background-color: var(--lightblue);
+    padding: 8px;
+    border-radius: 10px 10px 10px 0px;
+}
+
+.tooltip-left {
+    font-weight: lighter;
+    font-size: var(--s);
+    margin: 20px 10px 40px 10px;
+    font-style: italic;
+    background-color: var(--lightblue);
+    padding: 8px;
+    border-radius: 10px 10px 0px 10px;
+}

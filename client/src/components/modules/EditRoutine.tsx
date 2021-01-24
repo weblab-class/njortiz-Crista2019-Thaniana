@@ -1,5 +1,6 @@
 import NavBar from "../modules/NavBar";
 import React, { Component } from "react";
+import { Popup } from "semantic-ui-react";
 import { RouteComponentProps, navigate } from "@reach/router";
 import "./EditRoutine.css";
 import User from "../../../../shared/User";
@@ -57,6 +58,16 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     });
   };
 
+  // restricts input to letters and numbers but no special characters
+  restrictInput = (event) => {
+    const regex = new RegExp("^[a-zA-Z0-9]");
+    const key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    if (!regex.test(key)) {
+      event.preventDefault();
+      return false;
+    }
+  };
+
   togglePublic = (event) => {
     this.setState({
       isPublic: !this.state.isPublic,
@@ -109,48 +120,47 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
 
   // save the routine: this entails making an api call to send the Routine state to the DB as a new user routine and then clearing the states completely
   saveRoutine = (event) => {
-
     // converting duration to seconds
     this.setState({
-        duration: this.state.duration * 60,
+      duration: this.state.duration * 60,
     });
 
     // API send should occur now
 
-    // clearing the state for a new routine 
+    // clearing the state for a new routine
     // TODO:
-    // (once this is refactored to be edit, this shouldn't matter since these values will get passed in at the begining as either empty as follows for new routines 
+    // (once this is refactored to be edit, this shouldn't matter since these values will get passed in at the begining as either empty as follows for new routines
     // or preloaded, which means the routines need to be made deletable/editable rather than just listed)
-      get("/api/saved-routines").then((routines: Routine[]) => {
-        for (let routine of routines) {
-          // TODO: show error message when trying to create a routine with a pre-existing name
-          if (routine.name === this.state.name) {
-            return;
-          }
+    get("/api/saved-routines").then((routines: Routine[]) => {
+      for (let routine of routines) {
+        // TODO: show error message when trying to create a routine with a pre-existing name
+        if (routine.name === this.state.name) {
+          return;
         }
-        
-        if (this.state._id === "") { // this is a new routine since it has no id
-          post("/api/new-routine", { 
-            name: this.state.name, 
-            duration: this.state.duration, 
-            intervals: this.state.intervals, 
-            isPublic: this.state.isPublic
-          }).then(() => navigate(-1))
-        }
-        else {
-          post("/api/edit-routine", {
-            routine: {
-              name: this.state.name,
-              duration: this.state.duration,
-              intervals: this.state.intervals,
-              isPublic: this.state.isPublic,
-              owner: this.state.owner,
-              creator: this.state.creator,
-              _id: this.state._id,
-            }
-          }).then(() => navigate(-1));
-        }
-      });
+      }
+
+      if (this.state._id === "") {
+        // this is a new routine since it has no id
+        post("/api/new-routine", {
+          name: this.state.name,
+          duration: this.state.duration,
+          intervals: this.state.intervals,
+          isPublic: this.state.isPublic,
+        }).then(() => navigate(-1));
+      } else {
+        post("/api/edit-routine", {
+          routine: {
+            name: this.state.name,
+            duration: this.state.duration,
+            intervals: this.state.intervals,
+            isPublic: this.state.isPublic,
+            owner: this.state.owner,
+            creator: this.state.creator,
+            _id: this.state._id,
+          },
+        }).then(() => navigate(-1));
+      }
+    });
   };
 
   render() {
@@ -166,15 +176,37 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
             <form>
               <label>
                 <h3>Routine Name:</h3>
-                <input type="text" value={this.state.name} onChange={this.handleNameChange}></input>
+                <Popup
+                  trigger={
+                    <input
+                      type="text"
+                      onKeyPress={this.restrictInput}
+                      value={this.state.name}
+                      onChange={this.handleNameChange}
+                    ></input>
+                  }
+                  position="right center"
+                >
+                  <pre className="tooltip-right">
+                    Give your routine a name! (please use numbers/letters only, no special
+                    characters)
+                  </pre>
+                </Popup>
               </label>
               <label>
                 <p>Make Public?</p>
-                <input
-                  type="checkbox"
-                  checked={this.state.isPublic}
-                  onChange={this.togglePublic}
-                ></input>
+                <Popup
+                  trigger={
+                    <input
+                      type="checkbox"
+                      checked={this.state.isPublic}
+                      onChange={this.togglePublic}
+                    ></input>
+                  }
+                  position="right center"
+                >
+                  <pre className="tooltip-right">Check this box to make your routine public to all Intervals users</pre>
+                </Popup>
               </label>
               <label>
                 <p>Total Duration: </p>
@@ -187,7 +219,13 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
           {/* list out all the added intervals */}
           <div>
             {this.state.intervals.map(function (d, idx) {
-              return <li key={idx}><i>{d.name} | {(d.endTime - d.startTime) / 60} min</i></li>;
+              return (
+                <li key={idx}>
+                  <i>
+                    {d.name} | {(d.endTime - d.startTime) / 60} min
+                  </i>
+                </li>
+              );
             })}
           </div>
           <hr />
@@ -226,16 +264,30 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
                 </div>
               </div>
             ) : (
-              <div className="btn" onClick={this.addInterval}>
+              <Popup
+              trigger = {
+                <div className="btn" onClick={this.addInterval}>
                 New Interval
               </div>
+              }
+              position="left center"
+              >
+                <pre className="tooltip-left">Add another step to your routine?</pre>
+              </Popup>
             )}
           </div>
         </div>
         <div className="container">
-          <div className="btn submit" onClick={this.saveRoutine}>
+          <Popup 
+          trigger = {
+            <div className="btn submit" onClick={this.saveRoutine}>
             Save
           </div>
+          }
+          position="right center"
+          >
+            <pre className="tooltip-right">Save this routine?</pre>
+          </Popup>
         </div>
       </>
     );
