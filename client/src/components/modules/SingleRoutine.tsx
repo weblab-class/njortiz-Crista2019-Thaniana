@@ -3,6 +3,8 @@ import { Link, RouteComponentProps } from "@reach/router";
 
 import Routine from "../../../../shared/Routine";
 
+import "./SingleRoutine.css";
+
 type Props = {
   routine: Routine;
 }
@@ -13,9 +15,9 @@ class SingleRoutine extends Component<Props & RouteComponentProps> {
 
   render() {
     return (
-      <div className="Single-Routine">
-        <Link to={`/routines/${this.props.routine._id}`} className="Single-Routine-Name"><strong>{this.props.routine.name}</strong> | {this.props.routine.owner.name} </Link>
-      </div>
+        <li><Link to={`/routines/${this.props.routine._id}`} className="SingleRoutine-item">
+          <span className="SingleRoutine-name">{this.props.routine.name}</span> | <span className="SingleRoutine-owner">{this.props.routine.owner.name}</span>
+        </Link></li>
     );
   }
 }

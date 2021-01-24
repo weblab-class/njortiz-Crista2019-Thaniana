@@ -1,11 +1,10 @@
-.Single-Rountine-type{
-
+.SingleRoutine-item {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 200;
+  font-size: var(--l);
 }
 
-.Single-Routine{
-
-}
-
-.Single-Routine-type{
-    
+.SingleRoutine-item:hover .SingleRoutine-name {
+  font-weight: 300;
 }

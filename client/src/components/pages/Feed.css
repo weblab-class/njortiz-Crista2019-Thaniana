@@ -1,13 +1,26 @@
 .container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 
 .Searchbox {
-    text-align: center;
-    padding: 3%;
+  text-align: center;
+  padding: 3%;
+}
+.inputbox {
+  font-size: var(--l);
+  font-family: inherit;
+  text-align: center;
+  font-weight: 200;
+
+  border: 0;
+
+  background-color: var(--primary--dim);
+
+  width: 40%;
 }
 
-.inputbox {
-    width: 85%;
+.inputbox:focus {
+  outline: none;
 }
