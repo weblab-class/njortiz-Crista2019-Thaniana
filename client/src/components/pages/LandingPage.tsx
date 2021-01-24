@@ -41,7 +41,7 @@ class LandingPage extends Component<Props & RouteComponentProps, State> {
             <div className="title">i n t e r v a l s</div>
             <div className="content">interval scheduling made easy.</div>
             <div className="content">
-              {this.props.user ? (
+              {this.props.user?.name ? (
                 <GoogleLogout
                   clientId={GOOGLE_CLIENT_ID}
                   buttonText="Logout"

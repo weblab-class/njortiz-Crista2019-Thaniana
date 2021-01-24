@@ -26,7 +26,7 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
           <div className="item header">i n t e r v a l s</div>
           <ul className="items">
             <div className="item">
-              {this.props.user ? (
+              {this.props.user?.name ? (
                 <GoogleLogout
                   clientId={GOOGLE_CLIENT_ID}
                   buttonText="Logout"
