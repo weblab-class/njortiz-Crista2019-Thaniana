@@ -28,7 +28,6 @@ type Props = {
 type State = {
   loggedIn: boolean;
   routines: Routine[];
-  routine_name : string;
 };
 
 
@@ -38,7 +37,6 @@ class Feed extends Component<Props & RouteComponentProps, State> {
     this.state = {
       loggedIn: false,
       routines: [],
-      routine_name : "",
     };
   }
   componentDidMount() {
@@ -49,33 +47,12 @@ class Feed extends Component<Props & RouteComponentProps, State> {
     });
   }
 
-  onKeyDown = event => {
-    if(event.keyCode === 13){
-      //press enter
-      this.setState({
-        routine_name: event.target.value,
-      });
-    }
-  };
-
   getSearchResults = event => {
-    this.setState({
-      routine_name: event.target.value,
+    get("/api/search-routines" , {searchString: event.target.value}).then((routineObjs: Routine[]) => {
+      this.setState({
+        routines: routineObjs,
+      });
     });
-    console.log(this.state.routine_name)
-    if (this.state.routine_name === ""){
-      get("/api/public-routines").then((routineObjs: Routine[]) => {
-        this.setState({
-          routines: routineObjs,
-        });
-      });
-    } else {//case where we get an input from the user in the search box
-      get("/api/search-routines" , {searchString: this.state.routine_name}).then((routineObjs: Routine[]) => {
-        this.setState({
-          routines: routineObjs,
-        });
-      });
-    }
   };
 
   render() {
