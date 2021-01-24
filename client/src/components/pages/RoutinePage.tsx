@@ -1,5 +1,6 @@
 import NavBar from "../modules/NavBar";
 import React, { Component } from 'react';
+import "./RoutinePage.css";
 import { RouteComponentProps, navigate } from "@reach/router";
 import GoogleLogin, {
     GoogleLoginResponse,
@@ -99,16 +100,18 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
           handleLogout={this.props.handleLogout}
           user={this.props.user}
         />
+        <div className="container">
         <ul>
             <li>Routine name: {this.state.routine?.name} </li>
-            <li>Routine duration: {this.state.routine?.duration}</li>
-            <li>Intervals: {this.state.routine?.intervals.map((interval: Interval) => <span key={interval.startTime}>{interval.name} </span>)}</li>
+            <li>Routine duration: {Math.trunc(this.state.routine?.duration / 3600)} h : {Math.trunc(((this.state.routine?.duration / 3600) - Math.trunc(this.state.routine?.duration / 3600)) * 60)} m : 0 s</li>
+            <li>Remaining Intervals: {this.state.routine?.intervals.map((interval: Interval) => <div className="interval" key={interval.startTime}>{interval.name} </div>)}</li>
             <li>Current Interval: {this.getCurrentInterval()?.name}</li>
-            <li>Seconds Elapsed: {this.state.secondsElapsed}</li>
+            <li>Time Elapsed: {Math.trunc(this.state.secondsElapsed / 3600)} h : {Math.trunc(((this.state.secondsElapsed / 3600) - Math.trunc(this.state.secondsElapsed / 3600)) * 60)} m : {this.state.secondsElapsed % 60} s</li>
             <button onClick={this.startTimer}>Start Timer</button>
             <button onClick={this.pauseTimer}>Pause Timer</button>
             <button onClick={this.restartTimer}>Restart Timer</button>
         </ul>
+        </div>
         </>
       )
     }
