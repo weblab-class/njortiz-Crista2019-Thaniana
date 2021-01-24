@@ -1,0 +1,10 @@
+.RoutineList-item {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 200;
+  font-size: var(--l);
+}
+
+.RoutineList-item:hover {
+  font-weight: 300;
+}
