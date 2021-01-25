@@ -7,6 +7,7 @@ import GoogleLogin, {
   GoogleLoginResponseOffline,
   GoogleLogout,
 } from "react-google-login";
+import { get } from "../../utilities";
 
 import RoutineList from "../modules/RoutineList";
 import User from "../../../../shared/User";
@@ -19,12 +20,30 @@ type Props = {
 };
 
 type State = {
-  loggedIn: boolean;
+  photoURL: string;
 };
 
 class Dashboard extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
+    this.state = {
+      photoURL: "",
+    };
+  }
+
+  componentDidMount() {
+    if (this.props.user) {
+      get(`https://people.googleapis.com/v1/people/${this.props.user.googleid}`, {key: "AIzaSyACDtTirmJUTNrM653Jj4zr-pLKVAX6WLU", personFields: "photos"}).then((response) => {
+        const photos = response.photos;
+        for (let photo of photos) {
+          if (photo.metadata.primary && photo.metadata.source.type === "PROFILE") {
+            this.setState({
+              photoURL: photo.url,
+            });
+          }
+        }
+      });
+    }
   }
   render() {
     // if (!this.props.user) {
@@ -39,7 +58,7 @@ class Dashboard extends Component<Props & RouteComponentProps, State> {
           user={this.props.user}
         />
         <div className="Profile-Pic-Container">
-          <div className="Profile-Pic" />
+          <img src={this.state.photoURL} className="Profile-Pic" />
         </div>
         <div className="center-text">
           <h1 className="Profile-name">{this.props.user?.name}'s Routines</h1>
