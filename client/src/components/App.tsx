@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { navigate, Router } from "@reach/router";
 import { get, post } from "../utilities";
 import NotFound from "./pages/NotFound";
-import Skeleton from './pages/Skeleton';
 import LandingPage from "./pages/LandingPage";
 import Feed from "./pages/Feed";
 import Dashboard from "./pages/Dashboard";
@@ -72,7 +71,6 @@ class App extends Component<{}, State> {
             <Dashboard path="/dashboard" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
             <RoutinePage path="/routines/:routineId" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
             <CreateRoutine path="/new_routine" handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={this.state.user}/>
-            <Skeleton path="/shouldntneed" handleLogin={this.handleLogin} handleLogout={this.handleLogout} userId={this.state.user?._id}/>
             <NotFound default={true} />
           </Router>
         </div>

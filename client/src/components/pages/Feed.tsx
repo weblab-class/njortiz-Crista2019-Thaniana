@@ -19,7 +19,6 @@ import GoogleLogin, {
 
 import User from "../../../../shared/User";
 
-const GOOGLE_CLIENT_ID = "557034515616-co9vdfbbqi0s9dgiq9l286t9hfa91oim.apps.googleusercontent.com";
 type Props = {
   user: User;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
