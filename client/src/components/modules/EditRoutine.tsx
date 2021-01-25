@@ -60,7 +60,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
 
   // restricts input to letters and numbers but no special characters
   restrictInput = (event) => {
-    const regex = new RegExp("^[a-zA-Z0-9]");
+    const regex = new RegExp("^[a-zA-Z0-9 ]");
     const key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key)) {
       event.preventDefault();
@@ -239,6 +239,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
                     <input
                       type="text"
                       value={this.state.interval_name}
+                      onKeyPress={this.restrictInput}
                       onChange={this.handleIntNameChange}
                     ></input>
                   </label>
