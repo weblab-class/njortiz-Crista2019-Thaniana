@@ -8,7 +8,6 @@ import Dashboard from "./pages/Dashboard";
 import CreateRoutine from "./pages/CreateRoutine";
 import RoutinePage from "./pages/RoutinePage";
 import { GoogleLoginResponse } from "react-google-login";
-import { socket } from "../client-socket";
 import User from "../../../shared/User";
 import "../utilities.css";
 
@@ -31,12 +30,7 @@ class App extends Component<{}, State> {
           // TRhey are registed in the database and currently logged in.
           this.setState({ user: user});
         }
-      })
-      .then(() =>
-        socket.on("connect", () => {
-          post("/api/initsocket", { socketid: socket.id });
-        })
-      );
+      });
   }
 
   handleLogin = (res: GoogleLoginResponse) => {
