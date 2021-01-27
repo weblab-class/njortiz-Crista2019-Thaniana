@@ -68,6 +68,10 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
       });
     }
 
+    deleteRoutine = () {
+      post("/api/delete-routine", { routineId: this.props.routineId }).then(() => navigate("/dashboard"));
+    }
+
     getCurrentInterval = (): Interval => {
       if (!this.state.timer && this.state.secondsElapsed === 0) {
         return null;
@@ -147,6 +151,8 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
               }}>Edit</button> : <></>}
             {this.state.routine?.owner?._id != this.props.user?._id ? 
               <button onClick={this.saveRoutine}>Save to Dashboard</button> : null}
+            {this.state.routine?.owner?._id == this.props.user?._id ?
+              <button onClick={this.deleteRoutine}>Delete Routine</button> : null}
         </ul>
         </div>
         </>

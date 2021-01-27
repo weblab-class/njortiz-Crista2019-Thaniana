@@ -144,6 +144,17 @@ router.post("/edit-routine", (req, res) => {
     });
 });
 
+// takes { routineId: string } and deletes the corresponding routine from the database
+router.post("/delete-routine", (req, res) => {
+  Routine.findById(req.body?.routineId).then((routine: RoutineInterface) => {
+    if (routine.owner._id == req.user?._id) {
+      Routine.deleteOne({ _id: req.body?.routineId }).then(() => {
+        res.send({ msg: "successfully deleted"});
+      });
+    }
+  });
+});
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   const msg = `Api route not found: ${req.method} ${req.url}`;
