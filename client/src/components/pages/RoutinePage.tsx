@@ -10,7 +10,7 @@ import GoogleLogin, {
 import Routine from "../../../../shared/Routine";
 import Interval from "../../../../shared/Interval";
 import User from "../../../../shared/User";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 
 
 type Props = {
@@ -33,7 +33,7 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
           routine: null,
           timer: null,
           secondsElapsed: 0,
-          currentInterval: null
+          currentInterval: null,
       };
     }
 
@@ -43,6 +43,29 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
                 routine: routine
             });
         });
+    }
+    
+    saveRoutine = () => {
+      const newName: string = `${this.state.routine?.name} (created by: ${this.state.routine?.creator.name})`;
+      get("/api/saved-routines").then((routines: Routine[]) => {
+        if (this.state.routine.owner._id == this.props.user._id) {
+          alert("You already own this routine.");
+          return;
+        }
+        for (let routine of routines) {
+          if (routine.name === newName) {
+            alert("You already have a routine with the name " + newName);
+            return;
+          }
+        }
+
+        post("/api/save-routine", { originalRoutine_id: this.props.routineId })
+        .then((copyRoutine: Routine) => {
+          console.log("hello!!!!");
+          console.log(copyRoutine._id);
+          navigate(`/routines/${copyRoutine._id}`);
+        });
+      });
     }
 
     getCurrentInterval = (): Interval => {
@@ -93,8 +116,6 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
       //   navigate("/");
       //   return null;
       // }
-      console.log(this.props.user._id);
-      console.log(this.state.routine?.owner._id);
       return (
         <>
           <NavBar
@@ -112,7 +133,7 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
             <button onClick={this.startTimer}>Start Timer</button>
             <button onClick={this.pauseTimer}>Pause Timer</button>
             <button onClick={this.restartTimer}>Restart Timer</button>
-            {this.props.user._id == this.state.routine?.owner._id ?<button 
+            {this.props.user?._id == this.state.routine?.owner._id ?<button 
               onClick={() => {
                 navigate("/new_routine", { state: { routine: {
                   name: this.state.routine?.name,
@@ -124,6 +145,8 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
                   _id: this.state.routine?._id,
                 }}});
               }}>Edit</button> : <></>}
+            {this.state.routine?.owner?._id != this.props.user?._id ? 
+              <button onClick={this.saveRoutine}>Save to Dashboard</button> : null}
         </ul>
         </div>
         </>
