@@ -68,7 +68,7 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
       });
     }
 
-    deleteRoutine = () {
+    deleteRoutine = () => {
       post("/api/delete-routine", { routineId: this.props.routineId }).then(() => navigate("/dashboard"));
     }
 
