@@ -132,10 +132,10 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
             <li>Remaining Intervals: {this.state.routine?.intervals.map((interval: Interval) => <div className="interval" key={interval.startTime}>{interval.name} </div>)}</li>
             <li>Current Interval: {this.getCurrentInterval()?.name}</li>
             <li>Time Elapsed: {Math.trunc(this.state.secondsElapsed / 3600)} h : {Math.trunc(((this.state.secondsElapsed / 3600) - Math.trunc(this.state.secondsElapsed / 3600)) * 60)} m : {this.state.secondsElapsed % 60} s</li>
-            <button onClick={this.startTimer}>Start Timer</button>
-            <button onClick={this.pauseTimer}>Pause Timer</button>
-            <button onClick={this.restartTimer}>Restart Timer</button>
-            {this.props.user?._id == this.state.routine?.owner._id ?<button 
+            <button className="routine-control-btn" onClick={this.startTimer}>&#x25B6;</button>
+            <button className="routine-control-btn" onClick={this.pauseTimer}>&#9995;</button>
+            <button className="routine-control-btn" onClick={this.restartTimer}>&#9201;</button>
+            {this.props.user?._id == this.state.routine?.owner._id ?<button className="routine-control-btn"
               onClick={() => {
                 navigate("/new_routine", { state: { routine: {
                   name: this.state.routine?.name,
@@ -146,11 +146,12 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
                   owner: this.state.routine?.owner,
                   _id: this.state.routine?._id,
                 }}});
-              }}>Edit</button> : <></>}
+              }}>&#9998;</button> : <></>}
             {this.state.routine?.owner?._id != this.props.user?._id ? 
-              <button onClick={this.saveRoutine}>Save to Dashboard</button> : null}
+              <button className="routine-control-btn" onClick={this.saveRoutine}>&#128190;
+              </button> : null}
             {this.state.routine?.owner?._id == this.props.user?._id ?
-              <button onClick={this.deleteRoutine}>Delete Routine</button> : null}
+              <button className="routine-control-btn" onClick={this.deleteRoutine}>&#9940;</button> : null}
         </ul>
         </div>
         </>
