@@ -61,8 +61,6 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
 
         post("/api/save-routine", { originalRoutine_id: this.props.routineId })
         .then((copyRoutine: Routine) => {
-          console.log("hello!!!!");
-          console.log(copyRoutine._id);
           navigate(`/routines/${copyRoutine._id}`);
         });
       });

@@ -28,7 +28,6 @@ router.post("/initsocket", (req, res) => {
 
 // uses req.user to return array of all routines saved by that user
 router.get("/saved-routines", (req, res) => {
-  console.log(req.user);
   if (!req.user) {
     throw new Error("You must be logged in to access your saved routines.");
   }

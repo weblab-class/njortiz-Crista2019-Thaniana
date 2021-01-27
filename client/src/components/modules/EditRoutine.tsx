@@ -74,7 +74,6 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     this.setState({
       isPublic: !this.state.isPublic,
     });
-    console.log(this.state);
   };
 
   // show form for adding a new interval
@@ -116,7 +115,6 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
       x: 0,
       intervals: this.state.intervals.concat(IntervalObject),
     });
-    console.log(this.state);
   };
 
   deleteInterval = (index: number) => {
@@ -151,7 +149,6 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
         }
       }
 
-      console.log(this.state._id);
 
       if (this.state._id === "") {
         // this is a new routine since it has no id
@@ -233,7 +230,6 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
           {/* list out all the added intervals */}
           <div>
             {this.state.intervals.map((d, idx) => {
-              console.log("this:" + this);
               return (
                 <li className="interval-item" key={idx}>
                   <i>
