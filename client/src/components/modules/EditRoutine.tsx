@@ -128,8 +128,11 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
       newIntervals[i].endTime -= oldDuration;
     }
 
+    console.log(newIntervals);
+
     this.setState({
       intervals: newIntervals,
+      duration: this.state.duration - oldDuration / 60
     });
   }
 
