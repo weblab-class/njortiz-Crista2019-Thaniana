@@ -9,6 +9,7 @@ import GoogleLogin, {
   GoogleLogout,
 } from "react-google-login";
 import User from "../../../../shared/User";
+import Routine from "../../../../shared/Routine";
 
 type Props = {
   user: User;
@@ -16,12 +17,13 @@ type Props = {
   handleLogout: () => void;
 };
 type State = {
-  loggedIn: boolean;
+  originalRoutine: Routine;
 };
 
 class CreateRoutine extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
+    this.state = { originalRoutine: props.location.state.routine };
   }
 
   render() {
@@ -36,7 +38,7 @@ class CreateRoutine extends Component<Props & RouteComponentProps, State> {
           handleLogout={this.props.handleLogout}
           user={this.props.user}
         />
-        <EditRoutine user={this.props.user}></EditRoutine>
+        <EditRoutine user={this.props.user} originalRoutine={this.state.originalRoutine}></EditRoutine>
       </>
     );
   }

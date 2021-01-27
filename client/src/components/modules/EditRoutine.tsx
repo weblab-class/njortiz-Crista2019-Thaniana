@@ -17,6 +17,7 @@ interface Interval {
 
 type Props = {
   user: User;
+  originalRoutine?: Routine;
 };
 type State = {
   name: string;
@@ -36,14 +37,15 @@ type State = {
 class EditRoutine extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
+    const original = this.props.originalRoutine;
     this.state = {
-      name: "New Routine",
-      duration: 0,
-      intervals: [],
-      isPublic: false,
-      creator: this.props.user,
+      name: original ? original.name : "New Routine",
+      duration: original ? original.duration : 0,
+      intervals: original ? original.intervals : [],
+      isPublic: original ? original.isPublic : false,
+      creator: original ? original.creator : this.props.user,
       owner: this.props.user,
-      _id: "",
+      _id: original ? original._id : "",
       showAddInterval: false,
       interval_name: "",
       interval_start_time: 0,
@@ -90,8 +92,8 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
 
   updateIntervalTime = (value) => {
     this.setState({
-      x: value,
-      interval_end_time: this.state.interval_start_time + value,
+      x: value*60,
+      interval_end_time: this.state.interval_start_time + value*60,
     });
   };
 
@@ -100,9 +102,8 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     // make interval object and add to array in state
     let IntervalObject = {
       name: this.state.interval_name,
-      // conversation from minutes into seconds
-      startTime: this.state.interval_start_time * 60,
-      endTime: this.state.interval_end_time * 60,
+      startTime: this.state.interval_start_time,
+      endTime: this.state.interval_end_time,
     };
 
     // reset states for adding new interval data
@@ -128,21 +129,14 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
       newIntervals[i].endTime -= oldDuration;
     }
 
-    console.log(newIntervals);
-
     this.setState({
       intervals: newIntervals,
-      duration: this.state.duration - oldDuration / 60
+      duration: this.state.duration - oldDuration
     });
   }
 
   // save the routine: this entails making an api call to send the Routine state to the DB as a new user routine and then clearing the states completely
   saveRoutine = (event) => {
-    // converting duration to seconds
-    this.setState({
-      duration: this.state.duration * 60,
-    });
-
     // API send should occur now
 
     // clearing the state for a new routine
@@ -152,10 +146,12 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     get("/api/saved-routines").then((routines: Routine[]) => {
       for (let routine of routines) {
         // TODO: show error message when trying to create a routine with a pre-existing name
-        if (routine.name === this.state.name) {
+        if (routine._id !== this.state._id && routine.name === this.state.name) {
           return;
         }
       }
+
+      console.log(this.state._id);
 
       if (this.state._id === "") {
         // this is a new routine since it has no id
@@ -228,7 +224,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
               </label>
               <label>
                 <p>Total Duration: </p>
-                <p>{this.state.duration}</p>
+                <p>{this.state.duration / 60} Minutes</p>
               </label>
             </form>
           </div>
@@ -264,12 +260,12 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
                     ></input>
                   </label>
                   <label>
-                    <p>Duration: {this.state.x} Minutes</p>
+                    <p>Duration: {this.state.x / 60} Minutes</p>
                     <div className="slider">
                       <Slider
                         min={0}
                         max={60}
-                        value={this.state.x}
+                        value={this.state.x / 60}
                         onChange={this.updateIntervalTime}
                       />
                     </div>

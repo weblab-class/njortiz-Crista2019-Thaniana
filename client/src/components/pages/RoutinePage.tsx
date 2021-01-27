@@ -93,6 +93,8 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
       //   navigate("/");
       //   return null;
       // }
+      console.log(this.props.user._id);
+      console.log(this.state.routine?.owner._id);
       return (
         <>
           <NavBar
@@ -110,6 +112,18 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
             <button onClick={this.startTimer}>Start Timer</button>
             <button onClick={this.pauseTimer}>Pause Timer</button>
             <button onClick={this.restartTimer}>Restart Timer</button>
+            {this.props.user._id == this.state.routine?.owner._id ?<button 
+              onClick={() => {
+                navigate("/new_routine", { state: { routine: {
+                  name: this.state.routine?.name,
+                  duration: this.state.routine?.duration,
+                  intervals: this.state.routine?.intervals,
+                  isPublic: this.state.routine?.isPublic,
+                  creator: this.state.routine?.creator,
+                  owner: this.state.routine?.owner,
+                  _id: this.state.routine?._id,
+                }}});
+              }}>Edit</button> : <></>}
         </ul>
         </div>
         </>
