@@ -37,12 +37,21 @@ class RoutinePage extends Component<Props & RouteComponentProps, State> {
       };
     }
 
-    componentDidMount() {
-        get("/api/single-routine", { routineId: this.props.routineId }).then((routine: Routine) => {
-            this.setState({
-                routine: routine
-            });
+    getData = () => {
+      get("/api/single-routine", { routineId: this.props.routineId }).then((routine: Routine) => {
+        this.setState({
+            routine: routine
         });
+    });
+    }
+    componentDidMount() {
+       this.getData(); 
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+      if (prevProps.routineId !== this.props.routineId) {
+        this.getData();
+      }
     }
     
     saveRoutine = () => {
