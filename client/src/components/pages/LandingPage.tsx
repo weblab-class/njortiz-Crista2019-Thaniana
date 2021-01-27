@@ -19,6 +19,11 @@ type State = {
 };
 
 class LandingPage extends Component<Props & RouteComponentProps, State> {
+  componentDidMount = () => {
+    if (this.props.user) {
+      navigate("/dashboard");
+    }
+  }
   render() {
     // if (this.props.user) {
     //   navigate("/dashboard");
