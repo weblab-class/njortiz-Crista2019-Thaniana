@@ -118,6 +118,21 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
     console.log(this.state);
   };
 
+  deleteInterval = (index: number) => {
+    const newIntervals: Interval[] = [...this.state.intervals];
+    const oldDuration: number = newIntervals[index].endTime - newIntervals[index].startTime
+    newIntervals.splice(index, 1);
+    // shift timing of subsequent intervals back
+    for (let i = index; i < newIntervals.length; i++) {
+      newIntervals[i].startTime -= oldDuration;
+      newIntervals[i].endTime -= oldDuration;
+    }
+
+    this.setState({
+      intervals: newIntervals,
+    });
+  }
+
   // save the routine: this entails making an api call to send the Routine state to the DB as a new user routine and then clearing the states completely
   saveRoutine = (event) => {
     // converting duration to seconds
@@ -146,7 +161,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
           duration: this.state.duration,
           intervals: this.state.intervals,
           isPublic: this.state.isPublic,
-        }).then(() => navigate(-1));
+        }).then((routine: Routine) => navigate(`/routines/${routine._id}`));
       } else {
         post("/api/edit-routine", {
           routine: {
@@ -158,7 +173,7 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
             creator: this.state.creator,
             _id: this.state._id,
           },
-        }).then(() => navigate(-1));
+        }).then((routine: Routine) => navigate(`/routines/${routine._id}`));
       }
     });
   };
@@ -218,12 +233,14 @@ class EditRoutine extends Component<Props & RouteComponentProps, State> {
           <h3>Intervals in {this.state.name}:</h3>
           {/* list out all the added intervals */}
           <div>
-            {this.state.intervals.map(function (d, idx) {
+            {this.state.intervals.map((d, idx) => {
+              console.log("this:" + this);
               return (
-                <li key={idx}>
+                <li className="interval-item" key={idx}>
                   <i>
                     {d.name} | {(d.endTime - d.startTime) / 60} min
                   </i>
+                  <span onClick={() => this.deleteInterval(idx)} className="btn-delete">X</span>
                 </li>
               );
             })}
